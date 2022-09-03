@@ -47,9 +47,9 @@ export default function Movies() {
                 <Link to={`/movie/${movie.id}`} title={movie.title}>
                   <img
                     src={
-                      movie.poster_path !== ""
+                      movie.poster_path !== null
                         ? `https://image.tmdb.org/t/p/w400/${movie.poster_path}`
-                        : "/images/noImage.png"
+                        : "/images/no-available-poster.jpg"
                     }
                     alt={movie.title}
                     style={{
