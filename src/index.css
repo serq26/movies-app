@@ -64,6 +64,12 @@ a{text-decoration: none;}
     font-weight: bold;
     display: block;
     text-align: center;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.search-result .show-more:hover{
+  color: rgb(233, 99, 50);
 }
 
 .search-result-item {

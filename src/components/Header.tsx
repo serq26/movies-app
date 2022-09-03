@@ -12,6 +12,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchBar from "./SearchBar";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   // const {mode,changeTheme} = useTheme();
@@ -100,13 +101,16 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{padding:1}} >
         <Toolbar>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"            
-          >
-            MovieS
-          </Typography>
+          <Link to="/">
+            <Typography
+              variant="h5"
+              noWrap
+              component="div"   
+              color="#ffa726"     
+            >
+              MovieS
+            </Typography>
+          </Link>
           <Box sx={{ flexGrow: 1 }} />
           <SearchBar />
           <Box sx={{ flexGrow: 1 }} />

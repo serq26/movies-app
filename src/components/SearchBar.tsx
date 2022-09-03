@@ -1,10 +1,10 @@
 import { Skeleton } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Movie, searchMovie } from "../api";
+import { useNavigate } from "react-router-dom";
 
-export default function SearchBar2() {
-  const searchRef = useRef();
-
+export default function SearchBar() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState<string>("");
   const [options, setOptions] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,9 +27,16 @@ export default function SearchBar2() {
     }
   }, [search, isTyping]);
 
+  const handleClick = (search: string): void => {
+    navigate("/search", { state: search });
+    setSearch("");
+    setLoading(false);
+    setOptions([]);
+  };
+
   return (
     <div className="col-xl-3 col-lg-3">
-      <div className="search" ref={searchRef}>
+      <div className="search">
         <input
           type="search"
           value={search}
@@ -41,23 +48,30 @@ export default function SearchBar2() {
           <ul className="search-result">
             {options &&
               loading === false &&
-              options.slice(0,2).map((option, key) => (
-               <li>
-                 <a
-                   href={`/event/${option.id}`}
-                   key={key}
-                 >
-                   <div className="search-result-item">
-                     <span className="title">{option.title}</span>
-                   </div>
-                 </a>
-               </li>
+              options.slice(0, 2).map((option, key) => (
+                <li key={key}>
+                  <div onClick={() => handleClick(option.title)}>
+                    <div className="search-result-item">
+                      <span className="title">{option.title}</span>
+                    </div>
+                  </div>
+                </li>
               ))}
-              {options.length > 0 && !loading && <li><a className="show-more" href={`/${search}`}>Show More</a></li>}
+            {options.length > 0 && !loading && (
+              <li>
+                <div className="show-more" onClick={() => handleClick(search)}>Show More</div>
+              </li>
+            )}
             {loading &&
-              Array(3).fill([""])
-                .map((item, key) => <Skeleton height={10} sx={{padding:"20px",margin:"0 20px"}} key={key} />)
-            }
+              Array(3)
+                .fill([""])
+                .map((item, key) => (
+                  <Skeleton
+                    height={10}
+                    sx={{ padding: "20px", margin: "0 20px" }}
+                    key={key}
+                  />
+                ))}
             {options.length === 0 && loading === false && (
               <div className="result-not-found">
                 No results found for "{search}"

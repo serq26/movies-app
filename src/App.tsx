@@ -21,12 +21,12 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
       <BrowserRouter>
+        <Header />
         <Routes>
-          <Route index element={<Home />}/>
-          <Route path="movie/:movieId" element={<MovieDetail/>} />
-          <Route path="search/:query" element={<Search/>} />
+          <Route index element={<Home />} />
+          <Route path="movie/:movieId" element={<MovieDetail />} />
+          <Route path="search" element={<Search />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
