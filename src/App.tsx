@@ -5,6 +5,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 import { ThemeContext } from "./contexts/ThemeContext";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MovieDetail from "./pages/MovieDetail";
+import Search from "./pages/Search";
 
 export default function App() {
   const { mode } = useContext(ThemeContext);
@@ -19,7 +22,13 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header />
-      <Home />
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Home />}/>
+          <Route path="movie/:movieId" element={<MovieDetail/>} />
+          <Route path="search/:query" element={<Search/>} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
