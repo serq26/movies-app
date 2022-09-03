@@ -23,7 +23,7 @@ export default function CategorySlider() {
     setSelectedCategory(categoryId);
   };
 
-  var settings = {
+  var sliderSettings = {
     dots: false,
     infinite: true,
     speed: 1100,
@@ -32,7 +32,7 @@ export default function CategorySlider() {
   };
 
   return (
-    <Slider {...settings}>
+    <Slider {...sliderSettings}>
       {categories.map((category) => (
         <li key={category.id}>
           <button

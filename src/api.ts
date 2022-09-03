@@ -54,6 +54,15 @@ export async function fetchPopularMovies(page: number = 1): Promise<Movie[]> {
   return result;
 }
 
+export async function fetchTrendingMovies(page: number = 1): Promise<Movie[]> {
+  const result = axios
+    .get(
+      `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}`
+    )
+    .then((res) => res.data.results as Movie[]);
+  return result;
+}
+
 export async function fetchMovie(movieId: number): Promise<Movie> {
   const result = axios
     .get(
