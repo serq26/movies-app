@@ -10,8 +10,8 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import SearchBar from "./SearchBar";
 import { ThemeContext } from "../contexts/ThemeContext";
-
 
 export default function Header() {
   // const {mode,changeTheme} = useTheme();
@@ -108,6 +108,7 @@ export default function Header() {
             MovieS
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
+          <SearchBar />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
