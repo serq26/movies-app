@@ -10,9 +10,14 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 
 export default function Header() {
+  // const {mode,changeTheme} = useTheme();
+  const { mode, changeTheme } = useContext(ThemeContext);
+
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -102,7 +107,7 @@ export default function Header() {
           >
             MovieS
           </Typography>
-          <Box sx={{ flexGrow: 1 }} />          
+          <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
@@ -127,6 +132,19 @@ export default function Header() {
               color="inherit"
             >
               <MoreIcon />
+            </IconButton>
+          </Box>
+          <Box>
+            <IconButton
+              sx={{padding:0,ml:{xs:0,sm:2}}}
+              onClick={() => changeTheme(mode)}
+              color="inherit"
+            >
+              {mode === "dark" ? (
+                <Brightness7Icon />
+              ) : (
+                <Brightness4Icon />
+              )}
             </IconButton>
           </Box>
         </Toolbar>
