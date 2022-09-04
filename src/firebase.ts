@@ -21,13 +21,8 @@ export const createAccount = async (email: string, password: string) => {
 
 export const signIn = async (email: string, password: string) => {
   try {
-    const result = await signInWithEmailAndPassword(authentication, email, password);
-    console.log("RES",result)
+    await signInWithEmailAndPassword(authentication, email, password);
   } catch (error) {
     console.error(error);
   }
-};
-
-export const signOut = async () => {
-  await authentication.signOut();
 };

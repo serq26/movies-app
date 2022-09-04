@@ -8,21 +8,44 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createAccount, signIn } from "../firebase";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [openToast, setOpenToast] = useState<boolean>(false);
 
   const handleCreateAccount = async (): Promise<void> => {
     await createAccount(email, password);
+    setOpenToast(true);
   };
 
   const handleLogin = async (): Promise<void> => {
     await signIn(email, password);
   };
 
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenToast(false);
+  };
+
   return (
     <Container component="main" maxWidth="xs">
+      <Snackbar open={openToast} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Successfull!
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           marginTop: 8,
@@ -62,7 +85,7 @@ export default function SignIn() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Stack direction="row" spacing={1} sx={{mt:2}}>
+          <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
             <Button
               fullWidth
               variant="contained"

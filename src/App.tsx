@@ -30,7 +30,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="/movie/:movieId" element={<MovieDetail />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/signin" element={user ? <Navigate to="/" /> : <SignIn />} />
+          <Route path="/signin" element={Object.keys(user).length > 0 ? <Navigate to="/" /> : <SignIn />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

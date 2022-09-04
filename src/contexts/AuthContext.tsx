@@ -8,12 +8,13 @@ interface PropTypes {
 }
 
 interface User {
-    uid: string;
-    email: string;
+  uid: string;
+  email: string;
 }
 
 export type AuthContextType = {
   user: User;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -37,9 +38,16 @@ const AuthProvider = (props: PropTypes) => {
     };
   }, []);
 
-  const values = { user };
+  const logout = async () => {
+    setUser({} as User);
+    await authentication.signOut();
+  };
 
-  return <AuthContext.Provider value={values}>{props.children}</AuthContext.Provider>;
+  const values = { user, logout };
+
+  return (
+    <AuthContext.Provider value={values}>{props.children}</AuthContext.Provider>
+  );
 };
 
 const useAuth = () => useContext(AuthContext);
