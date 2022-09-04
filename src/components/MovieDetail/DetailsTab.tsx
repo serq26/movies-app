@@ -1,8 +1,9 @@
-import * as React from "react";
+import React, { useState, SyntheticEvent } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import DetailList from "./DetailsList";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -37,10 +38,10 @@ function a11yProps(index: number) {
   };
 }
 
-export default function DetailsTab() {
-  const [value, setValue] = React.useState(0);
+export default function DetailsTab(props: any) {
+  const [value, setValue] = useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
@@ -59,7 +60,7 @@ export default function DetailsTab() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Details
+        <DetailList/>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Suggestions

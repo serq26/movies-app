@@ -6,10 +6,16 @@ export interface MovieCategory {
   name: string;
 }
 
+export interface Genres {
+  id: string;
+  name: string;
+}
+
 export interface Movie {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
+  genres: Genres[];
   id: number;
   media_type: string;
   original_language: string;
@@ -35,6 +41,21 @@ export interface MovieTrailers {
   official: boolean;
   published_at: Date;
   id: string;
+}
+
+export interface Cast {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
 }
 
 export async function fetchCategories(): Promise<MovieCategory[]> {
@@ -98,5 +119,14 @@ export async function fetchTrailers(movieId: number): Promise<MovieTrailers[]> {
       `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`
     )
     .then((res) => res.data.results as MovieTrailers[]);
+  return result;
+}
+
+export async function fetchCast(movieId: number): Promise<Cast[]> {
+  const result = axios
+    .get(
+      `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${apiKey}&language=en-US`
+    )
+    .then((res) => res.data.cast as Cast[]);
   return result;
 }
