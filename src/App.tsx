@@ -25,8 +25,8 @@ export default function App() {
         <Header />
         <Routes>
           <Route index element={<Home />} />
-          <Route path="movie/:movieId" element={<MovieDetail />} />
-          <Route path="search" element={<Search />} />
+          <Route path="/movie/:movieId" element={<MovieDetail />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

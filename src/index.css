@@ -18,6 +18,13 @@ a{text-decoration: none;}
   z-index: 999;
 }
 
+.slick-slide {
+  visibility: hidden;
+}
+.slick-slide.slick-active {
+  visibility: visible;
+}
+
 /* Search Bar */
 .search {
   position: relative;

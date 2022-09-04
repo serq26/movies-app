@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import { fetchTrendingMovies, Movie } from "../api";
 import { Box, Button, Typography } from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { Link, useNavigate } from "react-router-dom";
 
 export default function TrendingMoviesSlider() {
   const [trendMovies, setTrendMovies] = useState<Movie[]>([]);
@@ -30,8 +31,8 @@ export default function TrendingMoviesSlider() {
 
   return (
     <Slider {...sliderSettings}>
-      {trendMovies.slice(0, 5).map((movie) => (
-        <div key={movie.id} className="image-slider-item">
+      {trendMovies.slice(0, 5).map(movie => 
+        <Box key={movie.id} className="image-slider-item">
           <Box
             component="img"
             src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
@@ -55,11 +56,11 @@ export default function TrendingMoviesSlider() {
             <Typography sx={{ fontSize: "32px" }}>{movie.title}</Typography>
             <Typography>{movie.overview}</Typography>
             <Button color="warning" variant="contained" endIcon={<ArrowForwardIosIcon />} sx={{margin:"20px 0",fontWeight:"bold"}}>
-              Details
+              <Link to={`/movie/${movie.id}`}>Details</Link>
             </Button>
           </Box>
-        </div>
-      ))}
+        </Box>
+      )}
     </Slider>
   );
 }
