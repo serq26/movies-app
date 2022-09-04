@@ -24,6 +24,19 @@ export interface Movie {
   vote_count: number;
 }
 
+export interface MovieTrailers {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: Date;
+  id: string;
+}
+
 export async function fetchCategories(): Promise<MovieCategory[]> {
   const result = axios
     .get(
@@ -56,9 +69,7 @@ export async function fetchPopularMovies(page: number = 1): Promise<Movie[]> {
 
 export async function fetchTrendingMovies(page: number = 1): Promise<Movie[]> {
   const result = axios
-    .get(
-      `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}`
-    )
+    .get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}`)
     .then((res) => res.data.results as Movie[]);
   return result;
 }
@@ -81,3 +92,11 @@ export async function searchMovie(query: string): Promise<Movie[]> {
   return result;
 }
 
+export async function fetchTrailers(movieId: number): Promise<MovieTrailers[]> {
+  const result = axios
+    .get(
+      `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`
+    )
+    .then((res) => res.data.results as MovieTrailers[]);
+  return result;
+}
