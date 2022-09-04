@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import DetailList from "./DetailsList";
+import CommentForm from "./CommentForm";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -54,19 +55,15 @@ export default function DetailsTab(props: any) {
           sx={{borderBottom:"1px solid rgba(255,255,255,0.2)"}}
           aria-label="Details Tab"
         >
-          <Tab sx={{width:"33.33%"}} label="Details" {...a11yProps(0)} />
-          <Tab sx={{width:"33.33%"}} label="Suggestions" {...a11yProps(1)} />
-          <Tab sx={{width:"33.33%"}} label="Comments" {...a11yProps(2)} />
+          <Tab sx={{width:"50%"}} label="Details" {...a11yProps(0)} />
+          <Tab sx={{width:"50%"}} label="Comments" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <DetailList/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Suggestions
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Comments
+        <CommentForm />
       </TabPanel>
     </Box>
   );

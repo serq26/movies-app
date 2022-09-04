@@ -60,7 +60,7 @@ export default function MovieDetail() {
             component="img"
             src={`https://image.tmdb.org/t/p/w1280/${movie["backdrop_path"]}`}
             alt={movie.title}
-            sx={{ opacity: ".5", width: "100%" }}
+            sx={{ opacity: ".25", width: "100%" }}
           />
         </Box>
       </Box>

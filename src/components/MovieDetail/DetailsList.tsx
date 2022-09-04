@@ -19,7 +19,7 @@ export default function DetailList() {
   return (
     <List>
       <ListItem>
-        <Typography component="span" sx={{ mr: 1 }}>
+        <Typography component="span" sx={{ mr: 1, fontWeight:"bold" }}>
           Categories:
         </Typography>
         {Object.keys(movie).length > 0 &&
