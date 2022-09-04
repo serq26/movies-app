@@ -5,12 +5,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 import { ThemeContext } from "./contexts/ThemeContext";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MovieDetail from "./pages/MovieDetail";
 import Search from "./pages/Search";
+import SignIn from "./pages/Signin";
+import { useAuth } from "./contexts/AuthContext";
 
 export default function App() {
   const { mode } = useContext(ThemeContext);
+  const { user } = useAuth();
 
   const theme = createTheme({
     palette: {
@@ -27,6 +30,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="/movie/:movieId" element={<MovieDetail />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/signin" element={user ? <Navigate to="/" /> : <SignIn />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
