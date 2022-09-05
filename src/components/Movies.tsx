@@ -7,6 +7,7 @@ import Skeleton from "@mui/material/Skeleton";
 import { Link } from "react-router-dom";
 import InfiniteScroll from "./InfiniteScroll";
 import { fetchPopularMovies } from "../api";
+import MovieCard from "./Movies/MovieCard";
 
 export default function Movies() {
   const { movies, setMovies } = useMovies();
@@ -45,7 +46,7 @@ export default function Movies() {
             <Grid xs={2} md={3} key={movie.id}>
               <Item>
                 <Link to={`/movie/${movie.id}`} title={movie.title}>
-                  <img
+                  {/* <img
                     src={
                       movie.poster_path !== null
                         ? `https://image.tmdb.org/t/p/w400/${movie.poster_path}`
@@ -57,7 +58,8 @@ export default function Movies() {
                       margin: "0 auto",
                       maxWidth: "100%",
                     }}
-                  />
+                  /> */}
+                  <MovieCard movie={movie} />
                 </Link>
               </Item>
             </Grid>

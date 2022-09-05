@@ -109,3 +109,14 @@ a{text-decoration: none;}
     height: 200px;
   }
 }
+
+/* Movie Detail */
+.detail-list {
+  padding-top: 0;
+}
+
+.detail-list li {
+ padding-top: 0; 
+ padding-left: 0;
+ margin-bottom: 10px;
+}
