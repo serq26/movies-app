@@ -23,7 +23,6 @@ export default function MovieDetail() {
   const [open, setOpen] = useState<boolean>(false);
   const [alert, setAlert] = useState<boolean>(false);
   const [shareDialog, setShareDialog] = useState<boolean>(false);
-  const [favorites, setFavorites] = useState<Favorites[]>([] as Favorites[]);
   const { movieId, setMovieId, movie } = useMovie();
   const { user } = useAuth();
 
@@ -34,7 +33,6 @@ export default function MovieDetail() {
   useEffect(() => {
     const getFavorites = async () => {
       if (user !== null) {
-        // setFavorites(await fetchFavorites(user.uid));
         const result = await fetchFavorites(user.uid);
         result.map((fav): void => {
           if (Number(fav) === movieId) {

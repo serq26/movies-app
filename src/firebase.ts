@@ -30,7 +30,6 @@ export const signIn = async (email: string, password: string) => {
 
 export const fetchFavorites = async (userId: string): Promise<Favorites[]> => {
   try {
-    console.log("userid",userId)
     const docRef = doc(firestore, "favorites", userId);
     const docSnap = await getDoc(docRef);
     return docSnap.data().movieId;
@@ -71,6 +70,32 @@ export const removeFavorites = async (movieId: number): Promise<void> => {
     await updateDoc(
       doc(firestore, "favorites", authentication.currentUser.uid), {movieId: newData}
     );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const addComment = async (name: string, comment: string, movieId: number): Promise<void> => {
+  console.log(name,comment,movieId)
+  try {
+    const docRef = doc(firestore, "comments", authentication.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      let prev = [];
+      prev = docSnap.data().comments;
+      prev.push({name,comment,movieId});
+      await updateDoc(
+        doc(firestore, "comments", authentication.currentUser.uid),
+        { comments: prev }
+      );
+    } else {
+      await setDoc(
+        doc(firestore, "comments", authentication.currentUser.uid),
+        { comments: [{name,comment,movieId}] }
+      );
+    }
   } catch (error) {
     console.log(error);
   }
