@@ -10,10 +10,12 @@ import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 import Dialog from "@mui/material/Dialog";
 import { useMovie } from "../../contexts/MovieContext";
 import DetailsTab from "./DetailsTab";
-import { addFavorites, removeFavorites } from "../../firebase";
+import { addFavorites, fetchFavorites, removeFavorites } from "../../firebase";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import ShareDialog from "./ShareDialog";
+import { Favorites } from "../../types";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function MovieDetail() {
   const [trailer, setTrailer] = useState<MovieTrailers>({} as MovieTrailers);
@@ -21,15 +23,28 @@ export default function MovieDetail() {
   const [open, setOpen] = useState<boolean>(false);
   const [alert, setAlert] = useState<boolean>(false);
   const [shareDialog, setShareDialog] = useState<boolean>(false);
+  const [favorites, setFavorites] = useState<Favorites[]>([] as Favorites[]);
   const { movieId, setMovieId, movie } = useMovie();
+  const { user } = useAuth();
 
   useEffect(() => {
-    setMovieId(Number(movieId));
+    setMovieId(movieId);
   }, [movieId]);
 
-  // useEffect(() => {
-
-  // }, []);
+  useEffect(() => {
+    const getFavorites = async () => {
+      if (user !== null) {
+        // setFavorites(await fetchFavorites(user.uid));
+        const result = await fetchFavorites(user.uid);
+        result.map((fav): void => {
+          if (Number(fav) === movieId) {
+            setFavorite(true);;
+          }
+        });
+      }
+    };
+    getFavorites();
+  }, [user]);
 
   const handleFavorite = async () => {
     if (favorite) {
@@ -76,7 +91,11 @@ export default function MovieDetail() {
 
   return (
     <Container maxWidth={false} className="movie-detail">
-      <ShareDialog open={shareDialog} setOpen={setShareDialog} movieLink={`${window.location.hostname}/movie/${movieId}`} />
+      <ShareDialog
+        open={shareDialog}
+        setOpen={setShareDialog}
+        movieLink={`${window.location.hostname}/movie/${movieId}`}
+      />
       <Snackbar
         open={alert}
         autoHideDuration={6000}

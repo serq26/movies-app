@@ -27,9 +27,15 @@ const AuthProvider = (props: PropTypes) => {
     const unsubscribe = onAuthStateChanged(
       authentication,
       async (currentuser) => {
-        const docRef = doc(firestore, "users", currentuser.uid);
-        const docSnap = await getDoc(docRef);
-        setUser(docSnap.data() as User);
+        if (currentuser) {
+          window.localStorage.setItem("firebaseUser", currentuser.uid);
+          const docRef = doc(firestore, "users", currentuser.uid);
+          const docSnap = await getDoc(docRef);
+          const userData = docSnap.data();
+          setUser({ uid: currentuser.uid, email: userData.email } as User);
+        } else {
+          console.log("There is no user.");
+        }
       }
     );
 
@@ -41,6 +47,7 @@ const AuthProvider = (props: PropTypes) => {
   const logout = async () => {
     setUser({} as User);
     await authentication.signOut();
+    localStorage.removeItem("firebaseUser");
   };
 
   const values = { user, logout };
