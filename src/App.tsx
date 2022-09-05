@@ -10,6 +10,7 @@ import MovieDetail from "./pages/MovieDetail";
 import Search from "./pages/Search";
 import SignIn from "./pages/Signin";
 import { useAuth } from "./contexts/AuthContext";
+import Profile from "./pages/Profile";
 
 export default function App() {
   const { mode } = useContext(ThemeContext);
@@ -30,6 +31,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="/movie/:movieId" element={<MovieDetail />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/signin" element={Object.keys(user).length > 0 ? <Navigate to="/" /> : <SignIn />} />
         </Routes>
       </BrowserRouter>

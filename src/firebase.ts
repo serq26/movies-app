@@ -2,9 +2,9 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc } from "firebase/firestore";
 import { authentication, firestore } from "./firebaseConfig";
-import { Favorites } from "./types";
+import { Comments, Favorites } from "./types";
 
 export const createAccount = async (email: string, password: string) => {
   try {
@@ -100,3 +100,32 @@ export const addComment = async (name: string, comment: string, movieId: number)
     console.log(error);
   }
 };
+
+export const fetchComments = async (movieId: number): Promise<Comments[]> => {
+  try {
+    const commentsQuery = query(collection(firestore, "comments"));
+    const commentsSnapshots = await getDocs(commentsQuery);
+    const movieComments: Comments[] = [];
+
+    commentsSnapshots.forEach((doc) => {
+      doc.data().comments.filter((data: Comments) => {
+        if(data.movieId === movieId) {
+          movieComments.push(data)
+        }
+      })
+    });
+    return movieComments;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const fetchUserComments = async (userId: string): Promise<Comments[]> => {
+  try {
+    const docRef = doc(firestore, "comments", userId);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data().comments;
+  } catch (error) {
+    console.log(error);
+  }
+}
