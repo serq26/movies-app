@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { fetchTrendingMovies, Movie } from "../api";
+import { fetchTrendingMovies } from "../api";
 import { Box, Button, Typography } from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Link, useNavigate } from "react-router-dom";
+import { Movie } from "../types";
 
 export default function TrendingMoviesSlider() {
   const [trendMovies, setTrendMovies] = useState<Movie[]>([]);

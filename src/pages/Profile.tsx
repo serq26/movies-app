@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Box, Container } from "@mui/system";
 import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import { fetchFavorites, fetchUserComments } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
-import { fetchMovie, Movie } from "../api";
-import { UserComment } from "../types";
+import { fetchMovie } from "../api";
+import { Movie, UserComment } from "../types";
 import MovieCard from "../components/Movies/MovieCard";
 import { Grid, Stack } from "@mui/material";
 import { Link } from "react-router-dom";

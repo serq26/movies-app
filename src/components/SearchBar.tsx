@@ -1,7 +1,8 @@
 import { Skeleton } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { Movie, searchMovie } from "../api";
+import { searchMovie } from "../api";
 import { useNavigate } from "react-router-dom";
+import { Movie } from "../types";
 
 export default function SearchBar() {
   const navigate = useNavigate();

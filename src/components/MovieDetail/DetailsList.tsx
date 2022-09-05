@@ -3,7 +3,8 @@ import Typography from "@mui/material/Typography";
 import { useMovie } from "../../contexts/MovieContext";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import { Cast, fetchCast } from "../../api";
+import { fetchCast } from "../../api";
+import { Cast } from "../../types";
 
 export default function DetailList() {
   const { movie, movieId } = useMovie();
@@ -23,7 +24,7 @@ export default function DetailList() {
           Categories:
         </Typography>
         {Object.keys(movie).length > 0 &&
-          movie.genres.map((genre) => {
+          movie.genres.map((genre: any) => {
             return (
               <Typography key={genre.id} component="span">
                 {genre.name},{" "}

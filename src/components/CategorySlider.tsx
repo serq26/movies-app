@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { fetchCategories, fetchMoviesByCategory, MovieCategory } from "../api";
+import { fetchCategories, fetchMoviesByCategory } from "../api";
 import { MovieContextType, useMovies } from "../contexts/MoviesContext";
 import { Typography } from "@mui/material";
+import { MovieCategory } from "../types";
 
 export default function CategorySlider() {
   const [categories, setCategories] = useState<MovieCategory[]>([]);

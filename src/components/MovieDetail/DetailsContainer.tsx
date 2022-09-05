@@ -1,7 +1,7 @@
 import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import React, { useEffect, useState, forwardRef, SyntheticEvent } from "react";
-import { fetchTrailers, MovieTrailers } from "../../api";
+import { fetchTrailers } from "../../api";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import ShareIcon from "@mui/icons-material/Share";
@@ -14,7 +14,7 @@ import { addFavorites, fetchFavorites, removeFavorites } from "../../firebase";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import ShareDialog from "./ShareDialog";
-import { Favorites } from "../../types";
+import { MovieTrailers } from "../../types";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function MovieDetail() {

@@ -5,6 +5,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import DetailList from "./DetailsList";
 import CommentForm from "./CommentForm";
+import CommentsList from "./CommentsList";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,18 +57,29 @@ export default function DetailsTab(props: any) {
         <Tabs
           value={value}
           onChange={handleChange}
-          sx={{borderBottom:"1px solid rgba(255,255,255,0.2)"}}
+          sx={{ borderBottom: "1px solid rgba(255,255,255,0.2)" }}
           aria-label="Details Tab"
         >
-          <Tab sx={{width:"50%"}} label="Details" {...a11yProps(0)} />
-          <Tab sx={{width:"50%"}} label="Comments" {...a11yProps(1)} />
+          <Tab sx={{ width: "50%" }} label="Details" {...a11yProps(0)} />
+          <Tab sx={{ width: "50%" }} label="Comments" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <DetailList/>
+        <DetailList />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <CommentForm />
+        <Accordion sx={{background:"transparent"}}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            sx={{background:"rgba(0,0,0,0.5)"}}
+          >
+            <Typography>Make Your Comment</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <CommentForm />
+          </AccordionDetails>
+        </Accordion>
+        <CommentsList />
       </TabPanel>
     </Box>
   );

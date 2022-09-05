@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { fetchMovie, Movie } from "../api";
+import { fetchMovie } from "../api";
+import { Movie } from "../types";
 
 interface PropTypes {
   children: React.ReactNode;
