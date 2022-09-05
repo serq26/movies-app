@@ -170,7 +170,6 @@ export default function MovieDetail() {
           >
             Watch Trailer
           </Button>
-          <a href="mailto:no-one@snai1mai1.com?subject=look at this website&body=Hi,I found this website and thought you might like it http://www.geocities.com/wowhtml/">tell a friend</a>
           {Object.keys(trailer).length > 0 && (
             <Dialog maxWidth={false} open={open} onClose={handleClose}>
               <LiteYouTubeEmbed

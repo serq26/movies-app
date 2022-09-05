@@ -20,7 +20,7 @@ export default function TrendingMoviesSlider() {
   var sliderSettings = {
     dots: false,
     infinite: true,
-    speed: 2300,
+    speed: 2000,
     fade: true,
     cssEase: "linear",
     slidesToShow: 1,
@@ -42,6 +42,7 @@ export default function TrendingMoviesSlider() {
               objectFit: "cover",
               maxWidth: "100%",
               width: "100%",
+              opacity: "0.5"
             }}
           />
           <Box

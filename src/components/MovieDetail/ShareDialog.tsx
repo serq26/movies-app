@@ -19,9 +19,9 @@ export default function ShareDialog(props: PropTypes) {
 
   return (
     <Dialog open={props.open} onClose={() => props.setOpen(false)}>
-      <DialogTitle>Share Movie with E-mail</DialogTitle>
+      <DialogTitle sx={{textAlign:"center"}}>Share Movie with E-mail</DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        <DialogContentText sx={{fontSize:"0.9rem"}}>
           Enter the e-mail address of the person you want to recommend this
           movie to.
         </DialogContentText>
@@ -44,7 +44,7 @@ export default function ShareDialog(props: PropTypes) {
           window.location.href = `mailto:${email}?subject=Look at This Movie&body=Hi, I think you might like this movie too. I am sharing the link => ${props.movieLink}`;
           e.preventDefault();
         }}>
-         Share
+         <Button>Share</Button>
         </Link>
       </DialogActions>
     </Dialog>
