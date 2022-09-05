@@ -1,6 +1,6 @@
 import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef, SyntheticEvent } from "react";
 import { fetchTrailers, MovieTrailers } from "../../api";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
@@ -10,17 +10,38 @@ import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 import Dialog from "@mui/material/Dialog";
 import { useMovie } from "../../contexts/MovieContext";
 import DetailsTab from "./DetailsTab";
+import { addFavorites, removeFavorites } from "../../firebase";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import ShareDialog from "./ShareDialog";
 
 export default function MovieDetail() {
   const [trailer, setTrailer] = useState<MovieTrailers>({} as MovieTrailers);
   const [favorite, setFavorite] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [alert, setAlert] = useState<boolean>(false);
+  const [shareDialog, setShareDialog] = useState<boolean>(false);
   const { movieId, setMovieId, movie } = useMovie();
 
   useEffect(() => {
     setMovieId(Number(movieId));
   }, [movieId]);
 
-  const [open, setOpen] = useState<boolean>(false);
+  // useEffect(() => {
+
+  // }, []);
+
+  const handleFavorite = async () => {
+    if (favorite) {
+      setFavorite(false);
+      await removeFavorites(movieId);
+    } else {
+      setFavorite(true);
+      await addFavorites(movieId);
+    }
+    setAlert(!alert);
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -35,9 +56,52 @@ export default function MovieDetail() {
     handleClickOpen();
   };
 
+  const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const handleCloseAlert = (
+    event?: SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setAlert(false);
+  };
+
   return (
     <Container maxWidth={false} className="movie-detail">
-      <Box sx={{position: "relative"}}>
+      <ShareDialog open={shareDialog} setOpen={setShareDialog} movieLink={`${window.location.hostname}/movie/${movieId}`} />
+      <Snackbar
+        open={alert}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        {!favorite ? (
+          <Alert
+            onClose={handleCloseAlert}
+            severity="warning"
+            sx={{ width: "100%" }}
+          >
+            This movie removed your favorites!
+          </Alert>
+        ) : (
+          <Alert
+            onClose={handleCloseAlert}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            This movie added your favorites!
+          </Alert>
+        )}
+      </Snackbar>
+      <Box sx={{ position: "relative" }}>
         <Box
           component="div"
           className="overlay"
@@ -81,7 +145,7 @@ export default function MovieDetail() {
             <Tooltip placement="right" title="Add Favorites" arrow>
               <IconButton
                 aria-label="favorite"
-                onClick={() => setFavorite(!favorite)}
+                onClick={() => handleFavorite()}
               >
                 {favorite ? (
                   <StarIcon fontSize="large" color="warning" />
@@ -91,7 +155,7 @@ export default function MovieDetail() {
               </IconButton>
             </Tooltip>
             <Tooltip placement="right" title="Share with E-mail" arrow>
-              <IconButton>
+              <IconButton onClick={() => setShareDialog(true)}>
                 <ShareIcon fontSize="large" />
               </IconButton>
             </Tooltip>
@@ -106,6 +170,7 @@ export default function MovieDetail() {
           >
             Watch Trailer
           </Button>
+          <a href="mailto:no-one@snai1mai1.com?subject=look at this website&body=Hi,I found this website and thought you might like it http://www.geocities.com/wowhtml/">tell a friend</a>
           {Object.keys(trailer).length > 0 && (
             <Dialog maxWidth={false} open={open} onClose={handleClose}>
               <LiteYouTubeEmbed
