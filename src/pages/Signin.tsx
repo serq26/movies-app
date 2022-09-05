@@ -15,6 +15,7 @@ export default function SignIn() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [openToast, setOpenToast] = useState<boolean>(false);
+  const [activePage, setActivePage] = useState<string>("register");
 
   const handleCreateAccount = async (): Promise<void> => {
     await createAccount(email, password);
@@ -32,8 +33,11 @@ export default function SignIn() {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
       return;
     }
     setOpenToast(false);
@@ -46,6 +50,24 @@ export default function SignIn() {
           Successfull!
         </Alert>
       </Snackbar>
+      <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{ color: "#fff", background: `${activePage === "register" ? "#42a5f5" : "#a56508"}` }}
+          onClick={() => setActivePage("register")}
+        >
+          Register
+        </Button>
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{ color: "#fff", background: `${activePage === "login" ? "#42a5f5" : "#a56508"}` }}
+          onClick={() => setActivePage("login")}
+        >
+          Login
+        </Button>
+      </Stack>
       <Box
         sx={{
           marginTop: 8,
@@ -57,8 +79,8 @@ export default function SignIn() {
         <Avatar sx={{ m: 1, bgcolor: "#ffa726" }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign In
+        <Typography component="h1" variant="h5" sx={{textTransform: "capitalize"}}>
+          {activePage}
         </Typography>
         <Box sx={{ mt: 1 }}>
           <TextField
@@ -85,22 +107,14 @@ export default function SignIn() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+          <Stack sx={{mt:2}}>
             <Button
               fullWidth
               variant="contained"
               sx={{ color: "#fff", background: "#ffa726" }}
-              onClick={() => handleCreateAccount()}
+              onClick={() => activePage === "register" ?  handleCreateAccount() : handleLogin()}
             >
-              Register
-            </Button>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ color: "#fff", background: "#a56508" }}
-              onClick={() => handleLogin()}
-            >
-              Login
+              {activePage.toUpperCase()}
             </Button>
           </Stack>
         </Box>
