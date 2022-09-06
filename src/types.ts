@@ -69,3 +69,10 @@ export interface Genres {
   id: string;
   name: string;
 }
+
+import {AlertColor} from "@mui/material/Alert";
+
+export interface ToastData {
+  type: AlertColor;
+  message: string;
+}

@@ -1,7 +1,9 @@
 import axios from "axios";
 import { Cast, Movie, MovieTrailers, MovieCategory } from "./types";
 export const apiKey: string | undefined = process.env.TMDB_API_KEY;
-
+/**
+ * Get Movie Categories
+ */
 export async function fetchCategories(): Promise<MovieCategory[]> {
   try {
     const result = axios
@@ -15,6 +17,11 @@ export async function fetchCategories(): Promise<MovieCategory[]> {
   }
 }
 
+/**
+ * Get Movies by Category
+ * @param {number} categoryId
+ * @param {number} page
+ */
 export async function fetchMoviesByCategory(
   categoryId: number,
   page: number = 1
@@ -31,6 +38,10 @@ export async function fetchMoviesByCategory(
   }
 }
 
+/**
+ * Get Popular Movies
+ * @param {number} page
+ */
 export async function fetchPopularMovies(page: number = 1): Promise<Movie[]> {
   try {
     const result = axios
@@ -44,6 +55,10 @@ export async function fetchPopularMovies(page: number = 1): Promise<Movie[]> {
   }
 }
 
+/**
+ * Get Trending Movies
+ * @param {number} page
+ */
 export async function fetchTrendingMovies(page: number = 1): Promise<Movie[]> {
   try {
     const result = axios
@@ -55,6 +70,10 @@ export async function fetchTrendingMovies(page: number = 1): Promise<Movie[]> {
   }
 }
 
+/**
+ * Get Movie by id
+ * @param {number} movieId
+ */
 export async function fetchMovie(movieId: number): Promise<Movie> {
   try {
     const result = axios
@@ -68,6 +87,11 @@ export async function fetchMovie(movieId: number): Promise<Movie> {
   }
 }
 
+/**
+ * Search Movie by Query
+ * @param {string} query
+ * @param {number} page
+ */
 export async function searchMovie(query: string, page: number = 1): Promise<Movie[]> {
   try {
     const result = axios
@@ -81,6 +105,10 @@ export async function searchMovie(query: string, page: number = 1): Promise<Movi
   }
 }
 
+/**
+ * Get Movie's Trailers
+ * @param {number} movieId
+ */
 export async function fetchTrailers(movieId: number): Promise<MovieTrailers[]> {
   try {
     const result = axios
@@ -94,6 +122,10 @@ export async function fetchTrailers(movieId: number): Promise<MovieTrailers[]> {
   }
 }
 
+/**
+ * Get Movie's Cast
+ * @param {number} movieId
+ */
 export async function fetchCast(movieId: number): Promise<Cast[]> {
   try {
     const result = axios

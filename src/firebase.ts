@@ -20,17 +20,19 @@ import { Comments, Favorites } from "./types";
  * @param {string} email
  * @param {string} password
  */
-export const createAccount = async (email: string, password: string) => {
+export const createAccount = async (email: string, password: string): Promise<boolean> => {
   try {
     await createUserWithEmailAndPassword(authentication, email, password).then(
       async (userCredential) => {
         const user = userCredential.user;
         const userRef = doc(firestore, "users", user.uid);
         await setDoc(userRef, { email, password });
+        return true;
       }
     );
   } catch (error) {
     console.error(error);
+    return false;
   }
 };
 
@@ -39,11 +41,13 @@ export const createAccount = async (email: string, password: string) => {
  * @param {string} email
  * @param {string} password
  */
-export const signIn = async (email: string, password: string) => {
+export const signIn = async (email: string, password: string): Promise<boolean>  => {
   try {
     await signInWithEmailAndPassword(authentication, email, password);
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
 };
 
