@@ -120,6 +120,8 @@ export default function MovieDetail() {
     borderRadius: "10px",
     position: "sticky",
     top: "4%",
+    display: "block",
+    margin: "0 auto"
   };
 
   const descriptionSX = {
@@ -248,7 +250,6 @@ export default function MovieDetail() {
             </Dialog>
           )}
           <Box sx={{ height: 50 }} />
-          {/* <DetailsTab movie={movie} /> */}
           <CommentForm />
           <CommentsList />
         </Box>

@@ -58,7 +58,7 @@ export default function UserFavorites() {
       ) : (
         <Grid container>
           {favorites.map((movie) => (
-            <Grid key={movie.id} item xs={12} md={3} p={2}>
+            <Grid key={movie.id} item xs={12} sm={6} md={3} p={2}>
               <Link to={`/movie/${movie.id}`}>
                 <MovieCard movie={movie} />
               </Link>
