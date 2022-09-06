@@ -2,10 +2,24 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { authentication, firestore } from "./firebaseConfig";
 import { Comments, Favorites } from "./types";
 
+/**
+ * User Register with Email and Password
+ * @param {string} email
+ * @param {string} password
+ */
 export const createAccount = async (email: string, password: string) => {
   try {
     await createUserWithEmailAndPassword(authentication, email, password).then(
@@ -20,6 +34,11 @@ export const createAccount = async (email: string, password: string) => {
   }
 };
 
+/**
+ * Login with Email and Password
+ * @param {string} email
+ * @param {string} password
+ */
 export const signIn = async (email: string, password: string) => {
   try {
     await signInWithEmailAndPassword(authentication, email, password);
@@ -28,6 +47,10 @@ export const signIn = async (email: string, password: string) => {
   }
 };
 
+/**
+ * Get User's Favorite Movies
+ * @param {string} userId
+ */
 export const fetchFavorites = async (userId: string): Promise<Favorites[]> => {
   try {
     const docRef = doc(firestore, "favorites", userId);
@@ -36,8 +59,12 @@ export const fetchFavorites = async (userId: string): Promise<Favorites[]> => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
+/**
+ * Add Movie to Favorites
+ * @param {number} id
+ */
 export const addFavorites = async (id: number): Promise<void> => {
   try {
     const docRef = doc(firestore, "favorites", authentication.currentUser.uid);
@@ -62,45 +89,71 @@ export const addFavorites = async (id: number): Promise<void> => {
   }
 };
 
+/**
+ * Remove Movies from User's Favorite Movies
+ * @param {number} movieId
+ */
 export const removeFavorites = async (movieId: number): Promise<void> => {
   try {
     const docRef = doc(firestore, "favorites", authentication.currentUser.uid);
     const docSnap = await getDoc(docRef);
-    const newData = docSnap.data().movieId.filter((ids: number) => ids !== movieId);
+    const newData = docSnap
+      .data()
+      .movieId.filter((ids: number) => ids !== movieId);
     await updateDoc(
-      doc(firestore, "favorites", authentication.currentUser.uid), {movieId: newData}
+      doc(firestore, "favorites", authentication.currentUser.uid),
+      { movieId: newData }
     );
   } catch (error) {
     console.log(error);
   }
 };
 
-
-export const addComment = async (name: string, comment: string, movieId: number): Promise<void> => {
-  console.log(name,comment,movieId)
+/**
+ * Add User's or Anonym User's Comment
+ * @param {string} name
+ * @param {string} comment
+ * @param {number} movieId
+ * @param {string} userId
+ */
+export const addComment = async (
+  name: string,
+  comment: string,
+  movieId: number,
+  userId: string
+): Promise<void> => {
   try {
-    const docRef = doc(firestore, "comments", authentication.currentUser.uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      let prev = [];
-      prev = docSnap.data().comments;
-      prev.push({name,comment,movieId});
-      await updateDoc(
-        doc(firestore, "comments", authentication.currentUser.uid),
-        { comments: prev }
-      );
+    if (userId === undefined) {
+      console.log("user yok");
+      const dbRef = collection(firestore, "comments");
+      await addDoc(dbRef, { comments: [{ name, comment, movieId }] });
     } else {
-      await setDoc(
-        doc(firestore, "comments", authentication.currentUser.uid),
-        { comments: [{name,comment,movieId}] }
-      );
+      const docRef = doc(firestore, "comments", authentication.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        let prev = [];
+        prev = docSnap.data().comments;
+        prev.push({ name, comment, movieId });
+        await updateDoc(
+          doc(firestore, "comments", authentication.currentUser.uid),
+          { comments: prev }
+        );
+      } else {
+        await setDoc(
+          doc(firestore, "comments", authentication.currentUser.uid),
+          { comments: [{ name, comment, movieId }] }
+        );
+      }
     }
   } catch (error) {
     console.log(error);
   }
 };
 
+/**
+ * Get Movie Comments
+ * @param {number} movieId
+ */
 export const fetchComments = async (movieId: number): Promise<Comments[]> => {
   try {
     const commentsQuery = query(collection(firestore, "comments"));
@@ -109,18 +162,24 @@ export const fetchComments = async (movieId: number): Promise<Comments[]> => {
 
     commentsSnapshots.forEach((doc) => {
       doc.data().comments.filter((data: Comments) => {
-        if(data.movieId === movieId) {
-          movieComments.push(data)
+        if (data.movieId === movieId) {
+          movieComments.push(data);
         }
-      })
+      });
     });
     return movieComments;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-export const fetchUserComments = async (userId: string): Promise<Comments[]> => {
+/**
+ * Get User Comments
+ * @param {string} userId
+ */
+export const fetchUserComments = async (
+  userId: string
+): Promise<Comments[]> => {
   try {
     const docRef = doc(firestore, "comments", userId);
     const docSnap = await getDoc(docRef);
@@ -128,4 +187,4 @@ export const fetchUserComments = async (userId: string): Promise<Comments[]> => 
   } catch (error) {
     console.log(error);
   }
-}
+};
