@@ -60,34 +60,32 @@ const averageSX = {
     fontWeight: "bold",
     color: "#fff",
     marginLeft: "5px",
-    marginTop: "3px"
-  }
+    marginTop: "3px",
+  },
 };
 
 export default function MovieCard(props: PropTypes) {
   return (
-    <Link to={`movie/${props.movie.id}`} title={props.movie.title}>
-      <Box sx={wrapperSx}>
-        <Box
-          component="img"
-          sx={imageSx}
-          src={
-            props.movie.poster_path !== null
-              ? `https://image.tmdb.org/t/p/w400/${props.movie.poster_path}`
-              : "/images/no-available-poster.jpg"
-          }
-          alt={props.movie.title}
-        />
-        <Box component="div" sx={titleBoxSX}>
-          <Typography component="h5" color="white">
-            {props.movie.title}
-          </Typography>
-        </Box>
-        <Box sx={averageSX}>
-          <StarIcon />
-          <Typography component="span">{props.movie.vote_average}</Typography>
-        </Box>
+    <Box sx={wrapperSx}>
+      <Box
+        component="img"
+        sx={imageSx}
+        src={
+          props.movie.poster_path !== null
+            ? `https://image.tmdb.org/t/p/w400/${props.movie.poster_path}`
+            : "/images/no-available-poster.jpg"
+        }
+        alt={props.movie.title}
+      />
+      <Box component="div" sx={titleBoxSX}>
+        <Typography component="h5" color="white">
+          {props.movie.title}
+        </Typography>
       </Box>
-    </Link>
+      <Box sx={averageSX}>
+        <StarIcon />
+        <Typography component="span">{props.movie.vote_average}</Typography>
+      </Box>
+    </Box>
   );
 }

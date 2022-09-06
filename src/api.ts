@@ -68,11 +68,11 @@ export async function fetchMovie(movieId: number): Promise<Movie> {
   }
 }
 
-export async function searchMovie(query: string): Promise<Movie[]> {
+export async function searchMovie(query: string, page: number = 1): Promise<Movie[]> {
   try {
     const result = axios
       .get(
-        `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&page=1&include_adult=false&query=${query}`
+        `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&page=${page}&include_adult=false&query=${query}`
       )
       .then((res) => res.data.results as Movie[]);
     return result;

@@ -1,20 +1,30 @@
 import { Box, Container } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useEffect } from "react";
 import CategorySlider from "../components/CategorySlider";
 import TrendingMoviesSlider from "../components/TrendingMoviesSlider";
 import Movies from "../components/Movies";
 import ScrollToTop from "../components/ScrollToTop";
+import { useMovies } from "../contexts/MoviesContext";
+import { fetchPopularMovies } from "../api";
 
 export default function Home() {
-  const ref = useRef();
+  const { setMovies } = useMovies();
+
+  useEffect(() => {
+    const popularMovies = async (): Promise<void> => {
+      setMovies(await fetchPopularMovies());
+    };
+    popularMovies();
+  }, []);
+
   return (
-    <div ref={ref}>
+    <div>
       <TrendingMoviesSlider />
       <Container component="main" maxWidth="xl">
         <Box my={10}>
           <CategorySlider />
         </Box>
-        <Movies />
+        <Movies whichPage="home" />
       </Container>
       <ScrollToTop showBelow={250} />
     </div>

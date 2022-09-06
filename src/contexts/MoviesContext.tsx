@@ -19,13 +19,6 @@ const MoviesProvider = (props: PropTypes) => {
   const values = { movies, setMovies };
 
   useEffect(() => {
-    const movieCategories = async (): Promise<void> => {
-      setMovies(await fetchPopularMovies());
-    };
-    movieCategories();
-  }, []);
-
-  useEffect(() => {
     setMovies(movies);
   }, [movies]);
 
