@@ -3,7 +3,7 @@ import { Container } from "@mui/system";
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { searchMovie } from "../api";
-import Movies from "../components/Movies";
+import MoviesList from "../components/Movies/MoviesList";
 import ScrollToTop from "../components/ScrollToTop";
 import { useMovies } from "../contexts/MoviesContext";
 
@@ -35,7 +35,7 @@ export default function Search() {
       >
         Results for "{state as string}"
       </Typography>
-      <Movies whichPage="search" extraParam={state} />
+      <MoviesList whichPage="search" extraParam={state} />
       <ScrollToTop showBelow={250} />
     </Container>
   );

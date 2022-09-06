@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Header from "./components/Header";
+import Header from "./components/Header/Header";
 import Home from "./pages/Home";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@emotion/react";
@@ -31,7 +31,7 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="/movie/:movieId" element={<MovieDetail />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={Object.keys(user).length === 0 ? <Navigate to="/" /> : <Profile />} />
           <Route path="/signin" element={Object.keys(user).length > 0 ? <Navigate to="/" /> : <SignIn />} />
         </Routes>
       </BrowserRouter>
