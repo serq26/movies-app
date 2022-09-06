@@ -22,9 +22,9 @@ export async function fetchMoviesByCategory(
   try {
     const result = axios
       .get(
-        `https://api.themoviedb.org/3/list/${categoryId}?api_key=${apiKey}&language=en-US&page=${page}&append_to_response=images&include_image_language=en,pt,hu,tr`
+        `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=en-US&page=${page}&append_to_response=images&include_image_language=en,pt,hu,tr&with_genres=${categoryId}`
       )
-      .then((res) => res.data.items as Movie[]);
+      .then((res) => res.data.results as Movie[]);
     return result;
   } catch (error) {
     console.log(error);

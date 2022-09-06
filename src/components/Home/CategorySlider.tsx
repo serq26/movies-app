@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { fetchCategories, fetchMoviesByCategory } from "../api";
-import { MovieContextType, useMovies } from "../contexts/MoviesContext";
+import { fetchCategories, fetchMoviesByCategory } from "../../api";
+import { MovieContextType, useMovies } from "../../contexts/MoviesContext";
 import { Typography } from "@mui/material";
-import { MovieCategory } from "../types";
+import { MovieCategory } from "../../types";
 
 export default function CategorySlider() {
   const [categories, setCategories] = useState<MovieCategory[]>([]);
@@ -26,7 +26,7 @@ export default function CategorySlider() {
 
   var sliderSettings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 1100,
     slidesToShow: 5,
     slidesToScroll: 5,
@@ -37,21 +37,24 @@ export default function CategorySlider() {
       {categories.map((category) => (
         <li key={category.id}>
           <button
+            className="category-box"
             style={{
               border: "1px solid #ccc",
+              cursor: "pointer",
               borderRadius: 14,
               padding: 30,
               width: 200,
               display: "block",
               margin: "0 auto",
+              transition: "all .3s ease-in-out",
               background: `${
-                selectedCategory === category.id ? "red" : "transparent"
-              }`,
+                selectedCategory === category.id ? "#ffa726" : "transparent"
+              }`
             }}
             onClick={() => getMoviesByCategory(category.id)}
           >
             <Typography variant="h6" noWrap component="div" color="white">
-              {category.name} / {category.id}
+              {category.name}
             </Typography>
           </button>
         </li>

@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { useMovies } from "../contexts/MoviesContext";
+import { useMovies } from "../../contexts/MoviesContext";
 import Grid from "@mui/material/Unstable_Grid2";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Skeleton from "@mui/material/Skeleton";
 import { Link } from "react-router-dom";
-import InfiniteScroll from "./InfiniteScroll";
-import { fetchPopularMovies, searchMovie } from "../api";
-import MovieCard from "./Movies/MovieCard";
+import InfiniteScroll from "../InfiniteScroll";
+import { fetchPopularMovies, searchMovie } from "../../api";
+import MovieCard from "./MovieCard";
 
 type PropTypes = {
   whichPage: string;
   extraParam?: any;
 };
 
-export default function Movies(props: PropTypes) {
+export default function MoviesList(props: PropTypes) {
   const { movies, setMovies } = useMovies();
   const [page, setPage] = useState(1);
   const hasMoreData = movies.length < 1000;

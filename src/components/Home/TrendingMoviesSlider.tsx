@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { fetchTrendingMovies } from "../api";
+import { fetchTrendingMovies } from "../../api";
 import { Box, Button, Typography } from "@mui/material";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Link, useNavigate } from "react-router-dom";
-import { Movie } from "../types";
+import { Movie } from "../../types";
 
 export default function TrendingMoviesSlider() {
   const [trendMovies, setTrendMovies] = useState<Movie[]>([]);
@@ -30,39 +30,60 @@ export default function TrendingMoviesSlider() {
     autoplaySpeed: 4000,
   };
 
+  const slideImageSX = {
+    height: { xs: 500, md: 650 },
+    objectFit: "cover",
+    maxWidth: "100%",
+    width: "100%",
+    opacity: "0.5",
+  };
+
+  const slideTextSX = {
+    position: "absolute",
+    left: { xs: "10%", md: "15%" },
+    bottom: "25%",
+    width: { xs: "80%", md: "40%" },
+  };
+
+  const descriptionSX = {
+    display: "-webkit-box",
+    WebkitLineClamp: 3,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+  };
+
+  const slideButtonSX = {
+    margin: "20px 0",
+    fontWeight: "bold",
+    "& > a": {
+      color: "rgba(0, 0, 0, 0.87)",
+    },
+  };
+
   return (
     <Slider {...sliderSettings}>
-      {trendMovies.slice(0, 5).map(movie => 
+      {trendMovies.slice(0, 5).map((movie) => (
         <Box key={movie.id} className="image-slider-item">
           <Box
             component="img"
             src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
             alt={movie.title}
-            sx={{
-              height: { xs: 300, md: 650 },
-              objectFit: "cover",
-              maxWidth: "100%",
-              width: "100%",
-              opacity: "0.5"
-            }}
+            sx={slideImageSX}
           />
-          <Box
-            component="div"
-            sx={{
-              position: "absolute",
-              left: "15%",
-              bottom: "25%",
-              width: "40%",
-            }}
-          >
+          <Box component="div" sx={slideTextSX}>
             <Typography sx={{ fontSize: "32px" }}>{movie.title}</Typography>
-            <Typography>{movie.overview}</Typography>
-            <Button color="warning" variant="contained" endIcon={<ArrowForwardIosIcon />} sx={{margin:"20px 0",fontWeight:"bold"}}>
+            <Typography sx={descriptionSX}>{movie.overview}</Typography>
+            <Button
+              color="warning"
+              variant="contained"
+              endIcon={<ArrowForwardIosIcon />}
+              sx={slideButtonSX}
+            >
               <Link to={`/movie/${movie.id}`}>Details</Link>
             </Button>
           </Box>
         </Box>
-      )}
+      ))}
     </Slider>
   );
 }

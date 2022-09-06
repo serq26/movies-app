@@ -1,8 +1,8 @@
 import { Box, Container } from "@mui/material";
 import React, { useEffect } from "react";
-import CategorySlider from "../components/CategorySlider";
-import TrendingMoviesSlider from "../components/TrendingMoviesSlider";
-import Movies from "../components/Movies";
+import CategorySlider from "../components/Home/CategorySlider";
+import TrendingMoviesSlider from "../components/Home/TrendingMoviesSlider";
+import MoviesList from "../components/Movies/MoviesList";
 import ScrollToTop from "../components/ScrollToTop";
 import { useMovies } from "../contexts/MoviesContext";
 import { fetchPopularMovies } from "../api";
@@ -24,7 +24,7 @@ export default function Home() {
         <Box my={10}>
           <CategorySlider />
         </Box>
-        <Movies whichPage="home" />
+        <MoviesList whichPage="home" />
       </Container>
       <ScrollToTop showBelow={250} />
     </div>
