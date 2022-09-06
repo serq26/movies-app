@@ -17,10 +17,21 @@ export default function DetailList() {
     getCast();
   }, []);
 
+  const titleSX = {
+    color: "#f09d26",
+    borderBottom: "1px solid rgba(255,255,255,0.5)",
+    width: {xs: "100%", md: "50%"},
+  };
+
   return (
-    <List>
+    <List className="detail-list">
       <ListItem>
-        <Typography component="span" sx={{ mr: 1, fontWeight:"bold" }}>
+        <Typography variant="h5" sx={titleSX}>
+          Details
+        </Typography>
+      </ListItem>
+      <ListItem sx={{display:"block"}}>
+        <Typography component="span" sx={{ mr: 1, fontWeight: "bold" }}>
           Categories:
         </Typography>
         {Object.keys(movie).length > 0 &&
@@ -33,7 +44,7 @@ export default function DetailList() {
           })}
       </ListItem>
       <ListItem>
-        <Typography component="span" sx={{ mr: 1, fontWeight:"bold" }}>
+        <Typography component="span" sx={{ mr: 1, fontWeight: "bold" }}>
           Release Date:
         </Typography>
         <Typography component="span" sx={{ mr: 1 }}>
@@ -41,25 +52,21 @@ export default function DetailList() {
         </Typography>
       </ListItem>
       <ListItem>
-        <Typography component="span" sx={{ mr: 1, fontWeight:"bold" }}>
+        <Typography component="span" sx={{ mr: 1, fontWeight: "bold" }}>
           Vote Average:
         </Typography>
         <Typography component="span" sx={{ mr: 1 }}>
           {movie.vote_average}
         </Typography>
       </ListItem>
-      <ListItem sx={{ alignItems:"flex-start" }}>
-        <Typography component="span" sx={{ mr: 1, fontWeight:"bold" }}>
+      <ListItem sx={{ alignItems: "flex-start" }}>
+        <Typography component="span" sx={{ mr: 1, fontWeight: "bold" }}>
           Cast:
         </Typography>
         <List>
           {cast.length > 0 &&
-            cast.slice(0,10).map((c) => {
-              return (
-                <ListItem key={c.id}>
-                  {c.name}
-                </ListItem>
-              );
+            cast.slice(0, 10).map((c) => {
+              return <ListItem key={c.id}>{c.name}</ListItem>;
             })}
         </List>
       </ListItem>

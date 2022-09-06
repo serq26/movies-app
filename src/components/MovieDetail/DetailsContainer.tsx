@@ -1,6 +1,13 @@
-import { Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+  Grid,
+} from "@mui/material";
 import { Box, Container } from "@mui/system";
-import React, { useEffect, useState, forwardRef, SyntheticEvent } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchTrailers } from "../../api";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
@@ -9,13 +16,16 @@ import LiteYouTubeEmbed from "react-lite-youtube-embed";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 import Dialog from "@mui/material/Dialog";
 import { useMovie } from "../../contexts/MovieContext";
-import DetailsTab from "./DetailsTab";
 import { addFavorites, fetchFavorites, removeFavorites } from "../../firebase";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import ShareDialog from "./ShareDialog";
 import { MovieTrailers } from "../../types";
 import { useAuth } from "../../contexts/AuthContext";
+import DetailList from "./DetailsList";
+import CommentForm from "./CommentForm";
+import CommentsList from "./CommentsList";
+import SmartDisplayIcon from "@mui/icons-material/SmartDisplay";
+import { Toast } from "../Toast";
 
 export default function MovieDetail() {
   const [trailer, setTrailer] = useState<MovieTrailers>({} as MovieTrailers);
@@ -36,7 +46,7 @@ export default function MovieDetail() {
         const result = await fetchFavorites(user.uid);
         result.map((fav): void => {
           if (Number(fav) === movieId) {
-            setFavorite(true);;
+            setFavorite(true);
           }
         });
       }
@@ -69,22 +79,68 @@ export default function MovieDetail() {
     handleClickOpen();
   };
 
-  const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref
-  ) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
+  const overlaySX = {
+    position: "fixed",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 2,
+    backgroundImage:
+      "radial-gradient(farthest-side at 73% 21%,transparent,#000000)",
+  };
 
-  const handleCloseAlert = (
-    event?: SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
+  const bgSX = {
+    opacity: ".08",
+    width: "100%",
+  };
 
-    setAlert(false);
+  const bgWrapperSX = {
+    width: "100%",
+    position: "fixed",
+    zIndex: 0,
+    left: 0,
+    top: 0,
+  };
+
+  const contentSX = {
+    position: "relative",
+    alignSelf: "center",
+    padding: {xs: "50px 0", md: "50px"},
+    zIndex: 9,
+  };
+
+  const titleSX = {
+    color: "#ffa726",
+    fontWeight: "bold",
+  };
+
+  const posterSX = {
+    maxWidth: "100%",
+    borderRadius: "10px",
+    position: "sticky",
+    top: "4%",
+  };
+
+  const descriptionSX = {
+    color: "#fff",
+    marginY: 2,
+    width: {xs: "100%",md: "60%"},
+  };
+
+  const trailerBtnSX = {
+    display: "flex",
+    alignItems: "center",
+    color: "#fff",
+    borderColor: "#fff",
+    py: 1,
+    px: 4,
+    background: "rgba(255, 255, 255, 0.1)",
+    boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+    backdropFilter: "blur(3px)",
+    webkitBackdropFilter: "blur(3px)",
+    border: "1px solid rgba(255, 255, 255, 0.3)",
+    margin: { xs: "10px auto", md: "16px 0"}
   };
 
   return (
@@ -101,92 +157,87 @@ export default function MovieDetail() {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         {!favorite ? (
-          <Alert
-            onClose={handleCloseAlert}
+          <Toast
+            onClose={() => setAlert(false)}
             severity="warning"
             sx={{ width: "100%" }}
           >
             This movie removed your favorites!
-          </Alert>
+          </Toast>
         ) : (
-          <Alert
-            onClose={handleCloseAlert}
+          <Toast
+            onClose={() => setAlert(false)}
             severity="success"
             sx={{ width: "100%" }}
           >
             This movie added your favorites!
-          </Alert>
+          </Toast>
         )}
       </Snackbar>
-      <Box sx={{ position: "relative" }}>
-        <Box
-          component="div"
-          className="overlay"
-          sx={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            zIndex: 2,
-            backgroundImage:
-              "radial-gradient(farthest-side at 73% 21%,transparent,#1a1d29)",
-          }}
-        />
-        <Box
-          component="div"
-          sx={{ width: "100%", position: "fixed", zIndex: 0 }}
-        >
+      <Box sx={{ position: "absolute" }}>
+        <Box component="div" className="overlay" sx={overlaySX} />
+        <Box component="div" sx={bgWrapperSX}>
           <Box
             component="img"
             src={`https://image.tmdb.org/t/p/w1280/${movie["backdrop_path"]}`}
             alt={movie.title}
-            sx={{ opacity: ".25", width: "100%" }}
+            sx={bgSX}
           />
         </Box>
       </Box>
       <Container maxWidth={false}>
-        <Box
-          sx={{
-            position: "relative",
-            alignSelf: "center",
-            padding: "60vh 0 0 90px",
-            width: "50%",
-            zIndex: 9,
-          }}
-        >
-          <Stack direction="row">
-            <Typography variant="h3" sx={{ color: "#fff", fontWeight: "bold" }}>
-              {movie.title}
-            </Typography>
-            <Tooltip placement="right" title="Add Favorites" arrow>
-              <IconButton
-                aria-label="favorite"
-                onClick={() => handleFavorite()}
+        <Box sx={contentSX}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <Box
+                component="img"
+                sx={posterSX}
+                src={
+                  movie.poster_path !== null
+                    ? `https://image.tmdb.org/t/p/w400/${movie.poster_path}`
+                    : "/images/no-available-poster.jpg"
+                }
+              />
+            </Grid>
+            <Grid item xs={12} md={9}>
+              <Stack direction="row">
+                <Typography variant="h3" sx={titleSX}>
+                  {movie.title}
+                </Typography>
+                <Tooltip placement="right" title="Add Favorites" arrow>
+                  <IconButton
+                    aria-label="favorite"
+                    onClick={() => handleFavorite()}
+                  >
+                    {favorite ? (
+                      <StarIcon fontSize="large" color="warning" />
+                    ) : (
+                      <StarBorderIcon fontSize="large" />
+                    )}
+                  </IconButton>
+                </Tooltip>
+                <Tooltip placement="right" title="Share with E-mail" arrow>
+                  <IconButton onClick={() => setShareDialog(true)}>
+                    <ShareIcon fontSize="large" />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+              <Typography component="p" sx={descriptionSX}>
+                {movie.overview}
+              </Typography>
+              <Button
+                variant="outlined"
+                sx={trailerBtnSX}
+                onClick={() => getTrailer(movie.id)}
               >
-                {favorite ? (
-                  <StarIcon fontSize="large" color="warning" />
-                ) : (
-                  <StarBorderIcon fontSize="large" />
-                )}
-              </IconButton>
-            </Tooltip>
-            <Tooltip placement="right" title="Share with E-mail" arrow>
-              <IconButton onClick={() => setShareDialog(true)}>
-                <ShareIcon fontSize="large" />
-              </IconButton>
-            </Tooltip>
-          </Stack>
-          <Typography component="p" sx={{ color: "#fff", marginY: 2 }}>
-            {movie.overview}
-          </Typography>
-          <Button
-            variant="outlined"
-            sx={{ color: "#fff", borderColor: "#fff", py: 1, px: 4 }}
-            onClick={() => getTrailer(movie.id)}
-          >
-            Watch Trailer
-          </Button>
+                <SmartDisplayIcon sx={{ marginRight: "8px" }} />{" "}
+                <Typography component="span">Watch Trailer</Typography>
+              </Button>
+              <Box height={20} />
+              <DetailList />
+            </Grid>
+          </Grid>
+
           {Object.keys(trailer).length > 0 && (
             <Dialog maxWidth={false} open={open} onClose={handleClose}>
               <LiteYouTubeEmbed
@@ -197,7 +248,9 @@ export default function MovieDetail() {
             </Dialog>
           )}
           <Box sx={{ height: 50 }} />
-          <DetailsTab movie={movie} />
+          {/* <DetailsTab movie={movie} /> */}
+          <CommentForm />
+          <CommentsList />
         </Box>
       </Container>
     </Container>
