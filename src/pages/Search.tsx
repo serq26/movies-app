@@ -1,11 +1,12 @@
-import { Typography } from "@mui/material";
-import { Container } from "@mui/system";
-import React, { useEffect } from "react";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import React, { lazy,Suspense, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { searchMovie } from "../api";
 import MoviesList from "../components/Movies/MoviesList";
-import ScrollToTop from "../components/ScrollToTop";
 import { useMovies } from "../contexts/MoviesContext";
+
+const ScrollToTop = lazy(() => import("../components/ScrollToTop"));
 
 export default function Search() {
   const { state } = useLocation();
@@ -36,7 +37,7 @@ export default function Search() {
         Results for "{state as string}"
       </Typography>
       <MoviesList whichPage="search" extraParam={state} />
-      <ScrollToTop showBelow={250} />
+      <Suspense><ScrollToTop showBelow={250} /></Suspense>
     </Container>
   );
 }

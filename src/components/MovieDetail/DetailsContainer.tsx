@@ -6,26 +6,27 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { fetchTrailers } from "../../api";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import ShareIcon from "@mui/icons-material/Share";
-import LiteYouTubeEmbed from "react-lite-youtube-embed";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 import Dialog from "@mui/material/Dialog";
 import { useMovie } from "../../contexts/MovieContext";
 import { addFavorites, fetchFavorites, removeFavorites } from "../../firebase";
 import Snackbar from "@mui/material/Snackbar";
-import ShareDialog from "./ShareDialog";
 import { MovieTrailers, ToastData } from "../../types";
 import { useAuth } from "../../contexts/AuthContext";
 import DetailList from "./DetailsList";
-import CommentForm from "./CommentForm";
-import CommentsList from "./CommentsList";
 import SmartDisplayIcon from "@mui/icons-material/SmartDisplay";
 import { Toast } from "../Toast";
-import { AlertColor } from "@mui/material";
+import Loading from "../Loading";
+
+const CommentForm = lazy(() => import("./CommentForm"));
+const CommentsList = lazy(() => import("./CommentsList"));
+const ShareDialog = lazy(() => import("./ShareDialog"));
+const LiteYouTubeEmbed = lazy(() => import("react-lite-youtube-embed"));
 
 export default function MovieDetail() {
   const [trailer, setTrailer] = useState<MovieTrailers>({} as MovieTrailers);
@@ -59,15 +60,25 @@ export default function MovieDetail() {
     if (Object.keys(user).length > 0) {
       if (favorite) {
         setFavorite(false);
-        setToastData({type: "warning", message:"This movie removed your favorites!"})
+        setToastData({
+          type: "warning",
+          message: "This movie removed your favorites!",
+        });
         await removeFavorites(movieId);
       } else {
         setFavorite(true);
-        setToastData({type: "success", message:"This movie added your favorites!"})
+        setToastData({
+          type: "success",
+          message: "This movie added your favorites!",
+        });
         await addFavorites(movieId);
       }
     } else {
-      setToastData({type: "error", message:"You should be logged in to add this movie to your favourites."})
+      setToastData({
+        type: "error",
+        message:
+          "You should be logged in to add this movie to your favourites.",
+      });
     }
     setAlert(!alert);
   };
@@ -114,7 +125,7 @@ export default function MovieDetail() {
     position: "relative",
     alignSelf: "center",
     padding: { xs: "50px 0", md: "50px" },
-    zIndex: 9,
+    zIndex: 2,
   };
 
   const titleSX = {
@@ -154,35 +165,13 @@ export default function MovieDetail() {
 
   return (
     <Container maxWidth={false} className="movie-detail">
-      <ShareDialog
-        open={shareDialog}
-        setOpen={setShareDialog}
-        movieLink={`${window.location.hostname}/movie/${movieId}`}
-      />
-      {/* <Snackbar
-        open={alert}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        {!favorite ? (
-          <Toast
-            onClose={() => setAlert(false)}
-            severity="warning"
-            sx={{ width: "100%" }}
-          >
-            This movie removed your favorites!
-          </Toast>
-        ) : (
-          <Toast
-            onClose={() => setAlert(false)}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            This movie added your favorites!
-          </Toast>
-        )}
-      </Snackbar> */}
+      <Suspense fallback={<Loading/>}>
+        <ShareDialog
+          open={shareDialog}
+          setOpen={setShareDialog}
+          movieLink={`${window.location.hostname}/movie/${movieId}`}
+        />
+      </Suspense>
       <Snackbar
         open={alert}
         autoHideDuration={6000}
@@ -263,16 +252,22 @@ export default function MovieDetail() {
 
           {Object.keys(trailer).length > 0 && (
             <Dialog maxWidth={false} open={open} onClose={handleClose}>
-              <LiteYouTubeEmbed
-                id={trailer.key}
-                title={trailer.name}
-                wrapperClass="yt-lite"
-              />
+              <Suspense fallback={<Loading/>}>
+                <LiteYouTubeEmbed
+                  id={trailer.key}
+                  title={trailer.name}
+                  wrapperClass="yt-lite"
+                />
+              </Suspense>
             </Dialog>
           )}
           <Box sx={{ height: 50 }} />
-          <CommentForm />
-          <CommentsList />
+          <Suspense fallback={<Loading/>}>
+            <CommentForm />
+          </Suspense>
+          <Suspense fallback={<Loading/>}>
+            <CommentsList />
+          </Suspense>
         </Box>
       </Container>
     </Container>

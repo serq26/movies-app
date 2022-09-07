@@ -21,12 +21,12 @@ a {
   z-index: 999;
 }
 
-/* .slick-slide {
+.slick-slide {
   visibility: hidden;
 }
 .slick-slide.slick-active {
   visibility: visible;
-} */
+}
 
 .category-box:hover {
   background: #ffa726!important;

@@ -1,13 +1,15 @@
-import React from "react";
-import { Container } from "@mui/system";
-import UserFavorites from "../components/Profile/UserFavorites";
-import UserComments from "../components/Profile/UserComments";
+import React, { lazy, Suspense } from "react";
+import Container from '@mui/material/Container';
+import Loading from "../components/Loading";
+
+const UserFavorites = lazy(() => import("../components/Profile/UserFavorites"));
+const UserComments = lazy(() => import("../components/Profile/UserComments"));
 
 export default function Profile() {
   return (
     <Container maxWidth="lg">
-      <UserFavorites />
-      <UserComments />
+      <Suspense fallback={<Loading/>}><UserFavorites /></Suspense>
+      <Suspense fallback={<Loading/>}><UserComments /></Suspense>
     </Container>
   );
 }

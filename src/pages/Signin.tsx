@@ -1,11 +1,15 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import Container from "@mui/material/Container";
-import SigninForm from "../components/Signin/SigninForm";
+import Loading from "../components/Loading";
+
+const SigninForm = lazy(() => import("../components/Signin/SigninForm"));
 
 export default function SignIn() {
   return (
     <Container component="main" maxWidth="xs">
-      <SigninForm />
+      <Suspense fallback={<Loading/>}>
+        <SigninForm />
+      </Suspense>
     </Container>
   );
 }

@@ -1,11 +1,14 @@
-import { Box, Container } from "@mui/material";
-import React, { useEffect } from "react";
-import CategorySlider from "../components/Home/CategorySlider";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import React, { useEffect, lazy, Suspense } from "react";
 import TrendingMoviesSlider from "../components/Home/TrendingMoviesSlider";
-import MoviesList from "../components/Movies/MoviesList";
-import ScrollToTop from "../components/ScrollToTop";
 import { useMovies } from "../contexts/MoviesContext";
 import { fetchPopularMovies } from "../api";
+import Loading from "../components/Loading";
+
+const CategorySlider = lazy(() => import("../components/Home/CategorySlider"));
+const MoviesList = lazy(() => import("../components/Movies/MoviesList"));
+const ScrollToTop = lazy(() => import("../components/ScrollToTop"));
 
 export default function Home() {
   const { setMovies } = useMovies();
@@ -22,11 +25,17 @@ export default function Home() {
       <TrendingMoviesSlider />
       <Container component="main" maxWidth="xl">
         <Box my={10}>
-          <CategorySlider />
+          <Suspense fallback={<Loading/>}>
+            <CategorySlider />
+          </Suspense>
         </Box>
-        <MoviesList whichPage="home" />
+        <Suspense fallback={<Loading/>}>
+          <MoviesList whichPage="home" />
+        </Suspense>
       </Container>
-      <ScrollToTop showBelow={250} />
+      <Suspense fallback={<Loading/>}>
+        <ScrollToTop showBelow={250} />
+      </Suspense>
     </div>
   );
 }

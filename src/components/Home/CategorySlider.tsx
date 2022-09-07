@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
 import { fetchCategories, fetchMoviesByCategory } from "../../api";
 import { MovieContextType, useMovies } from "../../contexts/MoviesContext";
 import Typography from "@mui/material/Typography";
@@ -64,8 +64,8 @@ export default function CategorySlider() {
 
   return (
     <Slider {...sliderSettings}>
-      {categories.map((category) => (
-        <li key={category.id}>
+      {categories.map((category, index) => (
+        <div key={`${category.id}-${index}`}>
           <button
             className="category-box"
             style={{
@@ -87,7 +87,7 @@ export default function CategorySlider() {
               {category.name}
             </Typography>
           </button>
-        </li>
+        </div>
       ))}
     </Slider>
   );
