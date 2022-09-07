@@ -1,0 +1,1 @@
+process.env.TMDB_API_KEY = '7e2a959734742db38bb85178a4cd8382';

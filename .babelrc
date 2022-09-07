@@ -1,9 +1,17 @@
 {
-  "presets": ["@babel/preset-env", "@babel/preset-react"],
+  "presets": [
+    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ],
   "plugins": ["transform-class-properties"],
   "env": {
     "test": {
-      "plugins": ["transform-es2015-modules-commonjs", "react-hot-loader/babel", "syntax-dynamic-import"]
+      "plugins": [
+        "transform-es2015-modules-commonjs",
+        "react-hot-loader/babel",
+        "syntax-dynamic-import"
+      ]
     }
   }
 }
