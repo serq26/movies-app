@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -8,15 +8,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import SearchBar from "./SearchBar";
-import { ThemeContext } from "../../contexts/ThemeContext";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import AccountMenu from "./AccountMenu";
 
 export default function Header() {
-  // const {mode,changeTheme} = useTheme();
-  const { mode, changeTheme } = useContext(ThemeContext);
-  const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 

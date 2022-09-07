@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
-import { ThemeContext } from "./contexts/ThemeContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MovieDetail from "./pages/MovieDetail";
 import Search from "./pages/Search";
@@ -13,7 +12,6 @@ import { useAuth } from "./contexts/AuthContext";
 import Profile from "./pages/Profile";
 
 export default function App() {
-  const { mode } = useContext(ThemeContext);
   const { user } = useAuth();
 
   const theme = createTheme({
