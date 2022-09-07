@@ -1,0 +1,41 @@
+import React, { useEffect, useState } from "react";
+import Dialog from "@mui/material/Dialog";
+import LiteYouTubeEmbed from "react-lite-youtube-embed";
+import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
+import { MovieTrailers } from "../../../types";
+import { fetchTrailers } from "../../../api";
+
+type PropTypes = {
+    movieId: number;
+    open: boolean;
+    setOpen: (param: boolean) => void;
+}
+
+export default function Trailer(props: PropTypes) {
+  const [trailer, setTrailer] = useState<MovieTrailers>({} as MovieTrailers);
+  const {open, setOpen,movieId} = props;
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    const getTrailer = async (): Promise<void> => {
+      const trailers = await fetchTrailers(movieId);
+      setTrailer(
+        trailers.find((trailer) => trailer.name === "Official Trailer")
+      );
+    };
+    getTrailer();
+  }, []);
+
+  return (
+    <Dialog maxWidth={false} open={props.open} onClose={handleClose}>
+      <LiteYouTubeEmbed
+        id={trailer.key}
+        title={trailer.name}
+        wrapperClass="yt-lite"
+      />
+    </Dialog>
+  );
+}
