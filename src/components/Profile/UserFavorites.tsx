@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { fetchMovie } from "../../api";
 import { Movie } from "../../types";
 import MovieCard from "../../components/Movies/MovieCard";
-import Grid from '@mui/material/Grid';
+import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import Loading from "../Loading";
 
@@ -29,8 +29,8 @@ export default function UserFavorites() {
         setLoading(false);
       } catch (error) {
         setTimeout(() => {
-            setLoading(false)
-        }, 2000)
+          setLoading(false);
+        }, 2000);
       }
     };
     getFavorites();
@@ -50,6 +50,13 @@ export default function UserFavorites() {
     textAlign: "center",
     color: "#ffa726",
   };
+
+  const emptyMessageSX = {
+    color: "#fff",
+    display: "block",
+    margin: "20px auto"
+  }
+
   return (
     <Box sx={boxSX}>
       <Typography sx={titleSX}>My Favorite Movies</Typography>
@@ -57,13 +64,19 @@ export default function UserFavorites() {
         <Loading />
       ) : (
         <Grid container>
-          {favorites.map((movie) => (
-            <Grid key={movie.id} item xs={12} sm={6} md={3} p={2}>
-              <Link to={`/movie/${movie.id}`}>
-                <MovieCard movie={movie} />
-              </Link>
-            </Grid>
-          ))}
+          {favorites.length > 0 ? (
+            favorites.map((movie) => (
+              <Grid key={movie.id} item xs={12} sm={6} md={3} p={2}>
+                <Link to={`/movie/${movie.id}`}>
+                  <MovieCard movie={movie} />
+                </Link>
+              </Grid>
+            ))
+          ) : (
+            <Typography component="p" sx={emptyMessageSX}>
+              You haven't added any movies to your favorites yet.
+            </Typography>
+          )}
         </Grid>
       )}
     </Box>

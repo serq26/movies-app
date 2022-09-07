@@ -5,8 +5,8 @@ import { fetchUserComments } from "../../firebase";
 import { useAuth } from "../../contexts/AuthContext";
 import { fetchMovie } from "../../api";
 import { Movie, UserComment } from "../../types";
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
 import Loading from "../../components/Loading";
 
@@ -65,6 +65,12 @@ export default function UserComments() {
     },
   };
 
+  const emptyMessageSX = {
+    color: "#fff",
+    display: "block",
+    margin: "20px auto"
+  }
+
   return (
     <Box sx={boxSX}>
       <Typography sx={titleSX}>My Comments</Typography>
@@ -72,35 +78,41 @@ export default function UserComments() {
         <Loading />
       ) : (
         <Grid container spacing={3}>
-          {userComments.map((item, index) => (
-            <Grid key={index} item xs={12}>
-              <Link to={`/movie/${item.movie.id}`} title={item.movie.title}>
-                <Stack direction="row" sx={commentBoxSX}>
-                  <Box
-                    component="img"
-                    sx={{
-                      heigth: 100,
-                      width: 60,
-                      maxWidth: "100%",
-                      borderRadius: 2,
-                    }}
-                    src={
-                      item.movie.poster_path !== null
-                        ? `https://image.tmdb.org/t/p/w400/${item.movie.poster_path}`
-                        : "/images/no-available-poster.jpg"
-                    }
-                    alt={item.movie.title}
-                  />
-                  <Box sx={{ ml: 3 }}>
-                    <Typography sx={{ fontWeight: " bold", mb: 2 }}>
-                      {item.movie.title}
-                    </Typography>
-                    <Typography>{item.comment.comment}</Typography>
-                  </Box>
-                </Stack>
-              </Link>
-            </Grid>
-          ))}
+          {userComments.length > 0 ? (
+            userComments.map((item, index) => (
+              <Grid key={index} item xs={12}>
+                <Link to={`/movie/${item.movie.id}`} title={item.movie.title}>
+                  <Stack direction="row" sx={commentBoxSX}>
+                    <Box
+                      component="img"
+                      sx={{
+                        heigth: 100,
+                        width: 60,
+                        maxWidth: "100%",
+                        borderRadius: 2,
+                      }}
+                      src={
+                        item.movie.poster_path !== null
+                          ? `https://image.tmdb.org/t/p/w400/${item.movie.poster_path}`
+                          : "/images/no-available-poster.jpg"
+                      }
+                      alt={item.movie.title}
+                    />
+                    <Box sx={{ ml: 3 }}>
+                      <Typography sx={{ fontWeight: " bold", mb: 2 }}>
+                        {item.movie.title}
+                      </Typography>
+                      <Typography>{item.comment.comment}</Typography>
+                    </Box>
+                  </Stack>
+                </Link>
+              </Grid>
+            ))
+          ) : (
+            <Typography component="p" sx={emptyMessageSX}>
+              You have not made any comments yet.
+            </Typography>
+          )}
         </Grid>
       )}
     </Box>
