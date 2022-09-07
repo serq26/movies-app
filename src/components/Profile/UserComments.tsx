@@ -5,7 +5,8 @@ import { fetchUserComments } from "../../firebase";
 import { useAuth } from "../../contexts/AuthContext";
 import { fetchMovie } from "../../api";
 import { Movie, UserComment } from "../../types";
-import { Grid, Stack } from "@mui/material";
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 import { Link } from "react-router-dom";
 import Loading from "../../components/Loading";
 

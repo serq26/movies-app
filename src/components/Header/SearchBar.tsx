@@ -1,5 +1,5 @@
 import { Skeleton } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { searchMovie } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Movie } from "../../types";

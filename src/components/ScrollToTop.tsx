@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import IconButton from '@mui/material/IconButton';
 import React, { useState, useEffect } from "react";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 

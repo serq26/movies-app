@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { fetchCategories, fetchMoviesByCategory } from "../../api";
 import { MovieContextType, useMovies } from "../../contexts/MoviesContext";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { MovieCategory } from "../../types";
 
 export default function CategorySlider() {
@@ -36,30 +36,30 @@ export default function CategorySlider() {
         settings: {
           slidesToShow: 5,
           slidesToScroll: 5,
-        }
+        },
       },
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
-        }
+        },
       },
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-        }
+        },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -79,7 +79,7 @@ export default function CategorySlider() {
               transition: "all .3s ease-in-out",
               background: `${
                 selectedCategory === category.id ? "#ffa726" : "transparent"
-              }`
+              }`,
             }}
             onClick={() => getMoviesByCategory(category.id)}
           >

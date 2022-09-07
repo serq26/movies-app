@@ -1,12 +1,11 @@
-import {
-  Button,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-  Grid,
-} from "@mui/material";
-import { Box, Container } from "@mui/system";
+import Tooltip from '@mui/material/Tooltip';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import React, { useEffect, useState } from "react";
 import { fetchTrailers } from "../../api";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
