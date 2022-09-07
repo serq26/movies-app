@@ -5,11 +5,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-// import MovieDetail from "./pages/MovieDetail";
-// import Search from "./pages/Search";
-// import SignIn from "./pages/Signin";
-// import Profile from "./pages/Profile";
 import { useAuth } from "./contexts/AuthContext";
+import { MoviesProvider } from "./contexts/MoviesContext";
 
 const MovieDetail = lazy(() => import("./pages/MovieDetail"));
 const Search = lazy(() => import("./pages/Search"));
@@ -25,55 +22,57 @@ export default function App() {
     },
   });
 
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route index element={<Home />} />
-          <Route
-            path="/movie/:movieId"
-            element={
-              <Suspense fallback={<p>Loading...</p>}>
-                <MovieDetail />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <Suspense fallback={<p>Loading...</p>}>
-                <Search />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              Object.keys(user).length === 0 ? (
-                <Navigate to="/" />
-              ) : (
-                <Suspense fallback={<p>Loading...</p>}>
-                  <Profile />
-                </Suspense>
-              )
-            }
-          />
-          <Route
-            path="/signin"
-            element={
-              Object.keys(user).length > 0 ? (
-                <Navigate to="/" />
-              ) : (
-                <Suspense fallback={<p>Loading...</p>}>
-                  <SignIn />
-                </Suspense>
-              )
-            }
-          />
-        </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+  return (    
+      <MoviesProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <BrowserRouter>
+            <Header />
+            <Routes>
+              <Route index element={<Home />} />
+              <Route
+                path="/movie/:movieId"
+                element={
+                  <Suspense fallback={<p>Loading...</p>}>
+                    <MovieDetail />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <Suspense fallback={<p>Loading...</p>}>
+                    <Search />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  Object.keys(user).length === 0 ? (
+                    <Navigate to="/" />
+                  ) : (
+                    <Suspense fallback={<p>Loading...</p>}>
+                      <Profile />
+                    </Suspense>
+                  )
+                }
+              />
+              <Route
+                path="/signin"
+                element={
+                  Object.keys(user).length > 0 ? (
+                    <Navigate to="/" />
+                  ) : (
+                    <Suspense fallback={<p>Loading...</p>}>
+                      <SignIn />
+                    </Suspense>
+                  )
+                }
+              />
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
+      </MoviesProvider>
   );
 }

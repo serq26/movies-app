@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import Dialog from "@mui/material/Dialog";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
@@ -11,10 +11,10 @@ type PropTypes = {
     setOpen: (param: boolean) => void;
 }
 
-export default function Trailer(props: PropTypes) {
+function Trailer(props: PropTypes) {
   const [trailer, setTrailer] = useState<MovieTrailers>({} as MovieTrailers);
   const {open, setOpen,movieId} = props;
-
+ 
   const handleClose = () => {
     setOpen(false);
   };
@@ -30,7 +30,7 @@ export default function Trailer(props: PropTypes) {
   }, []);
 
   return (
-    <Dialog maxWidth={false} open={props.open} onClose={handleClose}>
+    <Dialog maxWidth={false} open={open} onClose={handleClose}>
       <LiteYouTubeEmbed
         id={trailer.key}
         title={trailer.name}
@@ -39,3 +39,5 @@ export default function Trailer(props: PropTypes) {
     </Dialog>
   );
 }
+
+export default memo(Trailer);

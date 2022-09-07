@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import Typography from "@mui/material/Typography";
-import { useMovie } from "../../contexts/MovieContext";
+import { useMovie } from "../../../contexts/MovieContext";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import { fetchCast } from "../../api";
-import { Cast } from "../../types";
+import { fetchCast } from "../../../api";
+import { Cast } from "../../../types";
 
-export default function DetailList() {
+function DetailList() {
   const { movie, movieId } = useMovie();
   const [cast, setCast] = useState<Cast[]>([]);
-
+  
   useEffect(() => {
     const getCast = async (): Promise<void> => {
       setCast(await fetchCast(movieId));
@@ -63,7 +63,7 @@ export default function DetailList() {
         <Typography component="span" sx={{ mr: 1, fontWeight: "bold" }}>
           Cast:
         </Typography>
-        <List>
+        <List sx={{paddingTop: 0}}>
           {cast.length > 0 &&
             cast.slice(0, 10).map((c) => {
               return <ListItem key={c.id}>{c.name}</ListItem>;
@@ -73,3 +73,5 @@ export default function DetailList() {
     </List>
   );
 }
+
+export default memo(DetailList);

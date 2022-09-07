@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -14,9 +14,9 @@ type PropTypes = {
   setOpen: (dialog: boolean) => void;
 };
 
-export default function ShareDialog(props: PropTypes) {
+function ShareDialog(props: PropTypes) {
   const [email, setEmail] = useState<string>("");
-
+  
   return (
     <Dialog open={props.open} onClose={() => props.setOpen(false)}>
       <DialogTitle sx={{textAlign:"center"}}>Share Movie with E-mail</DialogTitle>
@@ -50,3 +50,5 @@ export default function ShareDialog(props: PropTypes) {
     </Dialog>
   );
 }
+
+export default memo(ShareDialog);

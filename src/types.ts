@@ -1,3 +1,4 @@
+import {AlertColor} from "@mui/material/Alert";
 export interface Movie {
   adult: boolean;
   backdrop_path: string;
@@ -69,8 +70,6 @@ export interface Genres {
   id: string;
   name: string;
 }
-
-import {AlertColor} from "@mui/material/Alert";
 
 export interface ToastData {
   type: AlertColor;

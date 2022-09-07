@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import { addFavorites, fetchFavorites, removeFavorites } from "../../../firebase";
-import { ToastData } from "../../../types";
 import { useAuth } from "../../../contexts/AuthContext";
 
 type PropTypes = {
@@ -14,13 +13,13 @@ type PropTypes = {
     setAlert: (param:boolean) => void;
 }
 
-export default function FavoriteButton(props: PropTypes) {
+function FavoriteButton(props: PropTypes) {
   const [favorite, setFavorite] = useState<boolean>(false);
   const { movieId, setToastData, setAlert, alert } = props;
   const { user } = useAuth();
-
+  
   useEffect(() => {
-    const getFavorites = async () => {
+    const getFavorites = async (): Promise<void> => {
       if (user !== null) {
         const result = await fetchFavorites(user.uid);
         result.map((fav): void => {
@@ -71,3 +70,5 @@ export default function FavoriteButton(props: PropTypes) {
     </Tooltip>
   );
 }
+
+export default memo(FavoriteButton);

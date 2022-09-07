@@ -10,7 +10,7 @@ const overlaySX = {
 };
 
 const bgSX = {
-  opacity: ".08",
+  opacity: ".18",
   width: "100%",
 };
 

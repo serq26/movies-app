@@ -15,7 +15,7 @@ import AccountMenu from "./AccountMenu";
 export default function Header() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-
+  
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -110,7 +110,7 @@ export default function Header() {
     <Box sx={{ flexGrow: 1, position: "relative", zIndex: 9 }}>
       <AppBar
         sx={{
-          padding: 1, position: "relative"
+          paddingX: {xs: 1,md:3}, paddingY: 1, position: "relative"
         }}
       >
         <Toolbar sx={{padding: {xs:0}}}>

@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, useEffect } from "react";
+import React, { useState, FormEvent, useEffect, memo } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -13,7 +13,7 @@ import { useMovie } from "../../contexts/MovieContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { Toast } from "../Toast";
 
-export default function CommentForm() {
+function CommentForm() {
   const [name, setName] = useState<string>("");
   const [comment, setComment] = useState<string>("");
   const [alert, setAlert] = useState<boolean>(false);
@@ -112,3 +112,5 @@ export default function CommentForm() {
     </>
   );
 }
+
+export default memo(CommentForm);

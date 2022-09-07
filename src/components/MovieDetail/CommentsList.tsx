@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { useMovie } from "../../contexts/MovieContext";
 import { fetchComments } from "../../firebase";
 import { Comments } from "../../types";
@@ -7,7 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import Typography from "@mui/material/Typography";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-export default function CommentsList() {
+function CommentsList() {
   const [comments, setComments] = useState<Comments[]>([]);
   const { movieId } = useMovie();
 
@@ -63,3 +63,5 @@ export default function CommentsList() {
     </>
   );
 }
+
+export default memo(CommentsList);

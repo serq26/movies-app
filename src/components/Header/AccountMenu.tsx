@@ -14,7 +14,7 @@ export default function AccountMenu() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [username, setUsername] = useState<string>("");
-
+  
   useEffect(() => {
     if(Object.keys(user).length > 0){
       setUsername(user.email.substring(0,1).toUpperCase());

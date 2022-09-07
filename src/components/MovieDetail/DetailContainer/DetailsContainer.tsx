@@ -11,7 +11,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import { useMovie } from "../../../contexts/MovieContext";
 import Snackbar from "@mui/material/Snackbar";
 import { ToastData } from "../../../types";
-import DetailList from "../DetailsList";
+import DetailList from "./DetailsList";
 import SmartDisplayIcon from "@mui/icons-material/SmartDisplay";
 import { Toast } from "../../Toast";
 import Loading from "../../Loading";
@@ -29,7 +29,7 @@ import FavoriteButton from "./FavoriteButton";
 
 const CommentForm = lazy(() => import("../CommentForm"));
 const CommentsList = lazy(() => import("../CommentsList"));
-const ShareDialog = lazy(() => import("../ShareDialog"));
+const ShareDialog = lazy(() => import("./ShareDialog"));
 const Trailer = lazy(() => import("./Trailer"));
 
 export default function MovieDetail() {
@@ -49,7 +49,7 @@ export default function MovieDetail() {
         <ShareDialog
           open={shareDialog}
           setOpen={setShareDialog}
-          movieLink={`${window.location.hostname}/movie/${movieId}`}
+          movieLink={`https://${window.location.hostname}/movie/${movieId}`}
         />
       </Suspense>
       <Snackbar
