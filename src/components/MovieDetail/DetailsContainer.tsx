@@ -1,11 +1,11 @@
-import Tooltip from '@mui/material/Tooltip';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import Tooltip from "@mui/material/Tooltip";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import React, { useEffect, useState } from "react";
 import { fetchTrailers } from "../../api";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
@@ -18,19 +18,21 @@ import { useMovie } from "../../contexts/MovieContext";
 import { addFavorites, fetchFavorites, removeFavorites } from "../../firebase";
 import Snackbar from "@mui/material/Snackbar";
 import ShareDialog from "./ShareDialog";
-import { MovieTrailers } from "../../types";
+import { MovieTrailers, ToastData } from "../../types";
 import { useAuth } from "../../contexts/AuthContext";
 import DetailList from "./DetailsList";
 import CommentForm from "./CommentForm";
 import CommentsList from "./CommentsList";
 import SmartDisplayIcon from "@mui/icons-material/SmartDisplay";
 import { Toast } from "../Toast";
+import { AlertColor } from "@mui/material";
 
 export default function MovieDetail() {
   const [trailer, setTrailer] = useState<MovieTrailers>({} as MovieTrailers);
   const [favorite, setFavorite] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [alert, setAlert] = useState<boolean>(false);
+  const [toastData, setToastData] = useState<ToastData>({} as ToastData);
   const [shareDialog, setShareDialog] = useState<boolean>(false);
   const { movieId, setMovieId, movie } = useMovie();
   const { user } = useAuth();
@@ -54,12 +56,18 @@ export default function MovieDetail() {
   }, [user]);
 
   const handleFavorite = async () => {
-    if (favorite) {
-      setFavorite(false);
-      await removeFavorites(movieId);
+    if (Object.keys(user).length > 0) {
+      if (favorite) {
+        setFavorite(false);
+        setToastData({type: "warning", message:"This movie removed your favorites!"})
+        await removeFavorites(movieId);
+      } else {
+        setFavorite(true);
+        setToastData({type: "success", message:"This movie added your favorites!"})
+        await addFavorites(movieId);
+      }
     } else {
-      setFavorite(true);
-      await addFavorites(movieId);
+      setToastData({type: "error", message:"You should be logged in to add this movie to your favourites."})
     }
     setAlert(!alert);
   };
@@ -105,7 +113,7 @@ export default function MovieDetail() {
   const contentSX = {
     position: "relative",
     alignSelf: "center",
-    padding: {xs: "50px 0", md: "50px"},
+    padding: { xs: "50px 0", md: "50px" },
     zIndex: 9,
   };
 
@@ -120,13 +128,13 @@ export default function MovieDetail() {
     position: "sticky",
     top: "4%",
     display: "block",
-    margin: "0 auto"
+    margin: "0 auto",
   };
 
   const descriptionSX = {
     color: "#fff",
     marginY: 2,
-    width: {xs: "100%",md: "60%"},
+    width: { xs: "100%", md: "60%" },
   };
 
   const trailerBtnSX = {
@@ -141,7 +149,7 @@ export default function MovieDetail() {
     backdropFilter: "blur(3px)",
     webkitBackdropFilter: "blur(3px)",
     border: "1px solid rgba(255, 255, 255, 0.3)",
-    margin: { xs: "10px auto", md: "16px 0"}
+    margin: { xs: "10px auto", md: "16px 0" },
   };
 
   return (
@@ -151,7 +159,7 @@ export default function MovieDetail() {
         setOpen={setShareDialog}
         movieLink={`${window.location.hostname}/movie/${movieId}`}
       />
-      <Snackbar
+      {/* <Snackbar
         open={alert}
         autoHideDuration={6000}
         onClose={handleClose}
@@ -174,6 +182,20 @@ export default function MovieDetail() {
             This movie added your favorites!
           </Toast>
         )}
+      </Snackbar> */}
+      <Snackbar
+        open={alert}
+        autoHideDuration={6000}
+        onClose={() => setAlert(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Toast
+          onClose={() => setAlert(false)}
+          severity={toastData.type}
+          sx={{ width: "100%" }}
+        >
+          {toastData.message}
+        </Toast>
       </Snackbar>
       <Box sx={{ position: "absolute" }}>
         <Box component="div" className="overlay" sx={overlaySX} />
