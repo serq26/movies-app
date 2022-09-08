@@ -18,7 +18,7 @@ function CommentsList() {
     };
 
     getComments();
-  }, [movieId, comments]);
+  }, [movieId]);
 
   const commentBoxSX = {
     padding: "20px",

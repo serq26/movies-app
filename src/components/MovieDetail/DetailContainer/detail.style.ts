@@ -12,6 +12,8 @@ const overlaySX = {
 const bgSX = {
   opacity: ".18",
   width: "100%",
+  height: "100%",
+  objectFit: "cover"
 };
 
 const bgWrapperSX = {
@@ -20,6 +22,7 @@ const bgWrapperSX = {
   zIndex: 0,
   left: 0,
   top: 0,
+  bottom: 0
 };
 
 const contentSX = {
