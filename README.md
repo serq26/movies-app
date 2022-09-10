@@ -22,7 +22,7 @@
 </ul>
 
 ### Demo
-https://movies-app-tmdb.surge.sh/
+https://tmdb-movies-app.surge.sh/
 
 ### Prerequisites
 * You'll need to have [git](https://git-scm.com/) and [node](https://nodejs.org/en/) installed in your system.
