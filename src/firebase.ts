@@ -20,7 +20,10 @@ import { Comments, Favorites } from "./types";
  * @param {string} email
  * @param {string} password
  */
-export const createAccount = async (email: string, password: string): Promise<boolean> => {
+export const createAccount = async (
+  email: string,
+  password: string
+): Promise<boolean> => {
   try {
     await createUserWithEmailAndPassword(authentication, email, password).then(
       async (userCredential) => {
@@ -41,7 +44,10 @@ export const createAccount = async (email: string, password: string): Promise<bo
  * @param {string} email
  * @param {string} password
  */
-export const signIn = async (email: string, password: string): Promise<boolean>  => {
+export const signIn = async (
+  email: string,
+  password: string
+): Promise<boolean> => {
   try {
     await signInWithEmailAndPassword(authentication, email, password);
     return true;
@@ -121,23 +127,21 @@ export const removeFavorites = async (movieId: number): Promise<void> => {
  * @param {string} userId
  */
 export const addComment = async (
-  name: string,
-  comment: string,
-  movieId: number,
+  comment: Comments,
   userId: string
 ): Promise<void> => {
   try {
     if (userId === undefined) {
       console.log("user yok");
       const dbRef = collection(firestore, "comments");
-      await addDoc(dbRef, { comments: [{ name, comment, movieId }] });
+      await addDoc(dbRef, { comments: [comment] });
     } else {
       const docRef = doc(firestore, "comments", authentication.currentUser.uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         let prev = [];
         prev = docSnap.data().comments;
-        prev.push({ name, comment, movieId });
+        prev.push(comment);
         await updateDoc(
           doc(firestore, "comments", authentication.currentUser.uid),
           { comments: prev }
@@ -145,7 +149,7 @@ export const addComment = async (
       } else {
         await setDoc(
           doc(firestore, "comments", authentication.currentUser.uid),
-          { comments: [{ name, comment, movieId }] }
+          comment
         );
       }
     }

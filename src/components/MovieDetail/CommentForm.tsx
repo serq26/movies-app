@@ -12,10 +12,13 @@ import { addComment } from "../../firebase";
 import { useMovie } from "../../contexts/MovieContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { Toast } from "../Toast";
+import { useComments } from "../../contexts/CommentContext";
+import { Comments } from "../../types";
 
 function CommentForm() {
   const [name, setName] = useState<string>("");
-  const [comment, setComment] = useState<string>("");
+  const [comment, setComment] = useState<Comments>({} as Comments);
+  const { comments, setComments } = useComments();
   const [alert, setAlert] = useState<boolean>(false);
   const { movieId } = useMovie();
   const { user } = useAuth();
@@ -29,9 +32,11 @@ function CommentForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     try {
-      await addComment(name, comment, movieId,user.uid);
+      // await addComment(name, comment.comment, movieId, user.uid);
+      await addComment(comment,user.uid);
+      setComments([...comments, comment]);
       setName("");
-      setComment("");
+      setComment({name,comment: "",movieId});
       setAlert(true);
     } catch (error) {
       console.log(error);
@@ -87,8 +92,14 @@ function CommentForm() {
               multiline
               rows={4}
               required
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
+              value={comment.comment}
+              onChange={(e) =>
+                setComment({
+                  name,
+                  comment: e.target.value,
+                  movieId                  
+                })
+              }
             />
             <br />
             <br />

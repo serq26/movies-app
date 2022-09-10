@@ -26,6 +26,7 @@ import {
   trailerBtnSX,
 } from "./detail.style";
 import FavoriteButton from "./FavoriteButton";
+import { CommentsProvider } from "../../../contexts/CommentContext";
 
 const CommentForm = lazy(() => import("../CommentForm"));
 const CommentsList = lazy(() => import("../CommentsList"));
@@ -124,15 +125,21 @@ export default function MovieDetail() {
             </Grid>
           </Grid>
           <Suspense fallback={<Loading />}>
-            <Trailer movieId={movieId} open={openTrailer} setOpen={setOpenTrailer} />
+            <Trailer
+              movieId={movieId}
+              open={openTrailer}
+              setOpen={setOpenTrailer}
+            />
           </Suspense>
           <Box sx={{ height: 50 }} />
-          <Suspense fallback={<Loading />}>
-            <CommentForm />
-          </Suspense>
-          <Suspense fallback={<Loading />}>
-            <CommentsList />
-          </Suspense>
+          <CommentsProvider>
+            <Suspense fallback={<Loading />}>
+              <CommentForm />
+            </Suspense>
+            <Suspense fallback={<Loading />}>
+              <CommentsList />
+            </Suspense>
+          </CommentsProvider>
         </Box>
       </Container>
     </Container>

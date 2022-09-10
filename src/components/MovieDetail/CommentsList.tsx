@@ -6,9 +6,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Typography from "@mui/material/Typography";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useComments } from "../../contexts/CommentContext";
 
 function CommentsList() {
-  const [comments, setComments] = useState<Comments[]>([]);
+  const {comments, setComments} = useComments();
   const { movieId } = useMovie();
 
   useEffect(() => {
