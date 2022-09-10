@@ -6,15 +6,15 @@ import { MovieTrailers } from "../../../types";
 import { fetchTrailers } from "../../../api";
 
 type PropTypes = {
-    movieId: number;
-    open: boolean;
-    setOpen: (param: boolean) => void;
-}
+  movieId: number;
+  open: boolean;
+  setOpen: (param: boolean) => void;
+};
 
 function Trailer(props: PropTypes) {
   const [trailer, setTrailer] = useState<MovieTrailers>({} as MovieTrailers);
-  const {open, setOpen,movieId} = props;
- 
+  const { open, setOpen, movieId } = props;
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -22,9 +22,8 @@ function Trailer(props: PropTypes) {
   useEffect(() => {
     const getTrailer = async (): Promise<void> => {
       const trailers = await fetchTrailers(movieId);
-      setTrailer(
-        trailers.find((trailer) => trailer.name === "Official Trailer")
-      );
+      trailers.length > 0 &&
+        setTrailer(trailers.find((trailer) => trailer.type === "Trailer"));
     };
     getTrailer();
   }, []);

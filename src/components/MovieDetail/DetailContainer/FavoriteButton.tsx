@@ -20,7 +20,7 @@ function FavoriteButton(props: PropTypes) {
   
   useEffect(() => {
     const getFavorites = async (): Promise<void> => {
-      if (user !== null) {
+      if (Object.keys(user).length > 0) {
         const result = await fetchFavorites(user.uid);
         result.map((fav): void => {
           if (Number(fav) === movieId) {
